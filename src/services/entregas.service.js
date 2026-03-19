@@ -6,7 +6,11 @@ export class EntregasService {
       this.repository = repository; // Dependência injetada
    }
 
-   async listarTodos() {
+   async listarTodos(status) {
+      if (status) {
+         const items = await this.repository.listarTodos()
+         return items.filter(x => x.status === status)
+      }
       return this.repository.listarTodos();
    }
 

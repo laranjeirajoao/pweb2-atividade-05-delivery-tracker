@@ -14,7 +14,8 @@ export class EntregasController {
 
    async listarTodos(req, res, next) {
       try {
-         const entregas = await this.service.listarTodos();
+         const { status } = req.query
+         const entregas = await this.service.listarTodos(status);
          res.json(entregas);
       } catch (err) { next(err); }
    }

@@ -1,5 +1,5 @@
 import express from 'express';
-import { middlewareDeErros } from './middlewares/errors.middleware.js';
+import { middlewareDeErros } from './middlewares/error.middleware.js';
 import router from './routes/index.js';
 
 const app = express();

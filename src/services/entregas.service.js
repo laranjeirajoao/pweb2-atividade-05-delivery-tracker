@@ -11,9 +11,9 @@ export class EntregasService {
    }
 
    async buscarPorId(id) {
-      const usuario = await this.repository.buscarPorId(id);
-      if (!usuario) throw new AppError('Usuário não encontrado', 404);
-      return usuario;
+      const evento = await this.repository.buscarPorId(id);
+      if (!evento) throw new AppError('Usuário não encontrado', 404);
+      return evento;
    }
 
    async criar({ descricao, origem, destino }) {
@@ -42,5 +42,11 @@ export class EntregasService {
    async remover(id) {
       await this.buscarPorId(id); // Reutiliza a validação de existência
       return this.repository.remover(id);
+   }
+
+   async buscarHistoricoPorId(id) {
+      const evento = await this.repository.buscarPorId(id);
+      if (!evento) throw new AppError('Usuário não encontrado', 404);
+      return evento.historico;
    }
 }

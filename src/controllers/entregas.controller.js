@@ -9,6 +9,7 @@ export class EntregasController {
       this.criar = this.criar.bind(this);
       this.atualizar = this.atualizar.bind(this);
       this.remover = this.remover.bind(this);
+      this.buscarHistoricoPorId = this.buscarHistoricoPorId.bind(this)
    }
 
    async listarTodos(req, res, next) {
@@ -43,6 +44,13 @@ export class EntregasController {
       try {
          await this.service.remover(Number(req.params.id));
          res.status(204).send();
+      } catch (err) { next(err); }
+   }
+
+   async buscarHistoricoPorId(req, res, next) {
+      try {
+         const historico = await this.service.buscarHistoricoPorId(Number(req.params.id));
+         res.json(historico);
       } catch (err) { next(err); }
    }
 }

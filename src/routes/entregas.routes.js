@@ -11,8 +11,11 @@ const controller = new EntregasController(service);
 
 const router = Router()
 
+router.post('/', controller.criar);
 router.get('/', controller.listarTodos);
 router.get('/:id', controller.buscarPorId);
-router.post('/', controller.criar);
+router.patch("/:id/avancar", () => { }) // todo
+router.patch("/:id/cancelar", () => { }) // todo
+router.get("/:id/historico", controller.buscarHistoricoPorId)
 
 export default router

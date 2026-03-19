@@ -1,3 +1,5 @@
+import { EntregaStatus } from "../utils/EntregaStatusEnum.js";
+
 export class EntregasRepository {
    constructor(database) {
       this.database = database
@@ -11,8 +13,12 @@ export class EntregasRepository {
       return this.database.getEntregas().find(x => x.id === id) ?? null;
    }
 
+   async buscarPorDescricaoOrigemEDestino({ descricao, origem, destino }) {
+      return this.database.getEntregas().find(x => x.descricao === descricao && x.origem === origem && x.destino === destino && (x.status === EntregaStatus.CRIADA || x.status === EntregaStatus.EM_TRANSITO))
+   }
+
    async criar(dados) {
-      return this.database.getEntregas().push(dados);
+      return this.database.getEntregas().push({ id: this.database.generateId(), ...dados });
    }
 
    async atualizar(id, dados) {

@@ -8,8 +8,7 @@ export class EntregasService {
 
 	async listarTodos(status) {
 		if (status) {
-			const items = await this.repository.listarTodos();
-			return items.filter((x) => x.status === status);
+			return await this.repository.listarPorStatus(status);
 		}
 		return this.repository.listarTodos();
 	}

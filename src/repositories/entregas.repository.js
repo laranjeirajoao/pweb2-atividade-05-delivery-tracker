@@ -9,6 +9,10 @@ export class EntregasRepository {
 		return this.database.getEntregas();
 	}
 
+	async listarPorStatus(status) {
+		return this.database.getEntregas().filter((x) => x.status === status);
+	}
+
 	async buscarPorId(id) {
 		return this.database.getEntregas().find((x) => x.id === id) ?? null;
 	}

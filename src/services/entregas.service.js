@@ -20,6 +20,14 @@ export class EntregasService {
 	}
 
 	async criar({ descricao, origem, destino }) {
+		origem = origem.trim();
+		descricao = descricao.trim();
+		destino = destino.trim();
+
+		if (origem.toLowerCase() === destino.toLowerCase()) {
+			throw new AppError("Origem e Destino não podem ser iguais!", 409);
+		}
+
 		const jaExiste = await this.repository.buscarPorDescricaoOrigemEDestino({
 			descricao,
 			origem,

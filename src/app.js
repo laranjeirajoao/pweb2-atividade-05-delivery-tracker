@@ -1,15 +1,15 @@
-import express from 'express';
-import { middlewareDeErros } from './middlewares/error.middleware.js';
-import router from './routes/index.js';
+import express from "express";
+import { middlewareDeErros } from "./middlewares/error.middleware.js";
+import router from "./routes/index.js";
 
 const app = express();
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(router)
+app.use(router);
 
 // Middleware de erro — DEVE ter 4 parâmetros
 app.use(middlewareDeErros);
 
-export default app
+export default app;

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { EntregasController } from "../controllers/entregas.controller.js";
 import { Database } from "../database/database.js";
+import { validarCriacaoEntrega } from "../middlewares/validacao.middleware.js";
 import { EntregasRepository } from "../repositories/entregas.repository.js";
 import { EntregasService } from "../services/entregas.service.js";
 
@@ -11,7 +12,7 @@ const controller = new EntregasController(service);
 
 const router = Router();
 
-router.post("/", controller.criar);
+router.post("/", validarCriacaoEntrega, controller.criar);
 router.get("/", controller.listarTodos);
 router.get("/:id", controller.buscarPorId);
 router.patch("/:id/avancar", controller.avancarStatus);

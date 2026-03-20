@@ -32,12 +32,7 @@ export class EntregasService {
 			origem,
 			destino,
 			status: EntregaStatus.CRIADA,
-			historico: [
-				{
-					data: new Date().toISOString(),
-					descricao: "Criação",
-				},
-			],
+			historico: [this.criarHistorio("CRIAÇÃO")],
 		};
 
 		return this.repository.criar(novaEntrega);
@@ -55,7 +50,94 @@ export class EntregasService {
 
 	async buscarHistoricoPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
-		if (!entrega) throw new AppError("Entrega não encontrado", 404);
+		if (!entrega) throw new AppError("Entrega não encontrada", 404);
 		return entrega.historico;
+	}
+
+	async avancarStatus(id) {
+		const obj = await this.buscarPorId(id);
+		if (
+			obj.status === EntregaStatus.ENTREGUE ||
+			obj.status === EntregaStatus.CANCELADA
+		) {
+			throw new AppError(
+				`Entrega já finalizada. Status atual: ${obj.status}`,
+				409,
+			);
+		}
+		let novoStatus = "";
+		switch (obj.status) {
+			case EntregaStatus.CRIADA:
+				novoStatus = EntregaStatus.EM_TRANSITO;
+				break;
+			case EntregaStatus.EM_TRANSITO:
+				novoStatus = EntregaStatus.ENTREGUE;
+				break;
+			default:
+				throw new AppError(
+					`Entrega já finalizada. Status atual: ${obj.status}`,
+					409,
+				);
+		}
+		const updated = this._atualizarStatus(obj, novoStatus);
+		return await this.atualizar(id, updated);
+	}
+
+	async cancelarEntrega(id) {
+		const obj = await this.buscarPorId(id);
+		if (
+			obj.status === EntregaStatus.ENTREGUE ||
+			obj.status === EntregaStatus.CANCELADA
+		) {
+			throw new AppError(
+				`Entrega já finalizada. Status atual: ${obj.status}`,
+				409,
+			);
+		}
+		const updated = this._atualizarStatus(obj, EntregaStatus.CANCELADA);
+		return await this.atualizar(id, updated);
+	}
+
+	_atualizarStatus(obj, novoStatus) {
+		let status = obj.status;
+		const mudacaEhValida = this._mudancaStatusEhValida(status, novoStatus);
+		if (!mudacaEhValida) {
+			throw new AppError(
+				`Mudança de status de ${status} para ${novoStatus} não é permitida`,
+				409,
+			);
+		}
+
+		obj.status = EntregaStatus[novoStatus];
+		obj.historico.push(
+			this.criarHistorio(
+				`ATUALIZAÇÃO DE STATUS: ${status} -> ${novoStatus}`,
+			),
+		);
+		return obj;
+	}
+
+	_mudancaStatusEhValida(origem, destino) {
+		switch (origem) {
+			case EntregaStatus.CRIADA:
+				return [
+					EntregaStatus.EM_TRANSITO,
+					EntregaStatus.CANCELADA,
+				].includes(destino);
+			case EntregaStatus.EM_TRANSITO:
+				return [EntregaStatus.ENTREGUE, EntregaStatus.CANCELADA].includes(
+					destino,
+				);
+			case EntregaStatus.ENTREGUE:
+				// Entrega não pode ter status alterado depois de ser entregue
+				return false;
+			case EntregaStatus.CANCELADA:
+				// Entrega não pode ter status alterado depois de ser cancelada
+				return false;
+		}
+	}
+
+	criarHistorio(descricao) {
+		return { data: new Date().toISOString(), descricao };
 	}
 }

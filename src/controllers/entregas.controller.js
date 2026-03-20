@@ -10,6 +10,8 @@ export class EntregasController {
 		this.atualizar = this.atualizar.bind(this);
 		this.remover = this.remover.bind(this);
 		this.buscarHistoricoPorId = this.buscarHistoricoPorId.bind(this);
+		this.avancarStatus = this.avancarStatus.bind(this);
+		this.cancelarEntrega = this.cancelarEntrega.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
@@ -45,6 +47,28 @@ export class EntregasController {
 			const atualizado = await this.service.atualizar(
 				Number(req.params.id),
 				req.body,
+			);
+			res.json(atualizado);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async avancarStatus(req, res, next) {
+		try {
+			const atualizado = await this.service.avancarStatus(
+				Number(req.params.id),
+			);
+			res.json(atualizado);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async cancelarEntrega(req, res, next) {
+		try {
+			const atualizado = await this.service.cancelarEntrega(
+				Number(req.params.id),
 			);
 			res.json(atualizado);
 		} catch (err) {

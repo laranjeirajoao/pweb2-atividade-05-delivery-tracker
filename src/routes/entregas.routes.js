@@ -14,8 +14,8 @@ const router = Router();
 router.post("/", controller.criar);
 router.get("/", controller.listarTodos);
 router.get("/:id", controller.buscarPorId);
-router.patch("/:id/avancar", () => {}); // todo
-router.patch("/:id/cancelar", () => {}); // todo
+router.patch("/:id/avancar", controller.avancarStatus);
+router.patch("/:id/cancelar", controller.cancelarEntrega);
 router.get("/:id/historico", controller.buscarHistoricoPorId);
 
 export default router;

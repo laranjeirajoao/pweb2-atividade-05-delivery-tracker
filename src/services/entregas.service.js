@@ -16,7 +16,7 @@ export class EntregasService {
 
 	async buscarPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
-		if (!entrega) throw new AppError("Usuário não encontrado", 404);
+		if (!entrega) throw new AppError("Entrega não encontrado", 404);
 		return entrega;
 	}
 
@@ -56,7 +56,7 @@ export class EntregasService {
 
 	async buscarHistoricoPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
-		if (!entrega) throw new AppError("Usuário não encontrado", 404);
+		if (!entrega) throw new AppError("Entrega não encontrado", 404);
 		return entrega.historico;
 	}
 }

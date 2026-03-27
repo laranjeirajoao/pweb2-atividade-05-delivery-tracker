@@ -7,10 +7,7 @@ export class EntregasService {
 	}
 
 	async listarTodos(status) {
-		if (status) {
-			return await this.repository.listarPorStatus(status);
-		}
-		return this.repository.listarTodos();
+		return this.repository.listarTodos({ status });
 	}
 
 	async buscarPorId(id) {
@@ -28,12 +25,13 @@ export class EntregasService {
 			throw new AppError("Origem e Destino não podem ser iguais!", 409);
 		}
 
-		const jaExiste = await this.repository.buscarPorDescricaoOrigemEDestino({
+		const jaExiste = await this.repository.listarTodos({
 			descricao,
 			origem,
 			destino,
+			status: [EntregaStatus.CRIADA, EntregaStatus.EM_TRANSITO],
 		});
-		if (jaExiste) throw new AppError("Entrega já cadastrada", 409);
+		if (jaExiste.length > 0) throw new AppError("Entrega já cadastrada", 409);
 
 		const novaEntrega = {
 			descricao,
@@ -111,13 +109,16 @@ export class EntregasService {
 			);
 		}
 
-		obj.status = EntregaStatus[novoStatus];
-		obj.historico.push(
-			this.criarHistorio(
-				`ATUALIZAÇÃO DE STATUS: ${status} -> ${novoStatus}`,
-			),
-		);
-		return obj;
+		return {
+			...obj,
+			status: EntregaStatus[novoStatus],
+			historico: [
+				...obj.historico,
+				this.criarHistorio(
+					`ATUALIZAÇÃO DE STATUS: ${status} -> ${novoStatus}`,
+				),
+			],
+		};
 	}
 
 	_mudancaStatusEhValida(origem, destino) {

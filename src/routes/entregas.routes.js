@@ -2,11 +2,11 @@ import { Router } from "express";
 import { EntregasController } from "../controllers/entregas.controller.js";
 import { Database } from "../database/database.js";
 import { validarCriacaoEntrega } from "../middlewares/validacao.middleware.js";
-import { EntregasRepository } from "../repositories/entregas.repository.js";
+import { EntregasRepositoryInMemory } from "../repositories/entregas/entregas-in-memory.repository.js";
 import { EntregasService } from "../services/entregas.service.js";
 
 const database = new Database();
-const repository = new EntregasRepository(database);
+const repository = new EntregasRepositoryInMemory(database);
 const service = new EntregasService(repository);
 const controller = new EntregasController(service);
 

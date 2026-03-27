@@ -1,13 +1,8 @@
-// repositories/EntregasRepository.js
 // Tentando simular algo parecido com uma interface do typescript
 export class IEntregasRepository {
 	constructor(name) {
-		if (this.constructor == Shape) {
+		if (this.constructor == IEntregasRepository) {
 			throw new Error("Class is of abstract type and can't be instantiated");
-		}
-
-		if (this.getArea == undefined) {
-			throw new Error("getArea method must be implemented");
 		}
 		this.name = name;
 	}

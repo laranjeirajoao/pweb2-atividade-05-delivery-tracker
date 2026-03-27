@@ -1,4 +1,6 @@
-export class EntregasRepositoryInMemory extends EntregasRepository {
+import { IEntregasRepository } from "./ientregas.repository.js";
+
+export class EntregasRepositoryInMemory extends IEntregasRepository {
 	constructor(database) {
 		super();
 		this.database = database;

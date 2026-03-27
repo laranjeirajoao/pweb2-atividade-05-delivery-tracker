@@ -51,11 +51,6 @@ export class EntregasService {
 		return this.repository.atualizar(id, dados);
 	}
 
-	async remover(id) {
-		await this.buscarPorId(id); // Reutiliza a validação de existência
-		return this.repository.remover(id);
-	}
-
 	async buscarHistoricoPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
 		if (!entrega) throw new AppError("Entrega não encontrada", 404);

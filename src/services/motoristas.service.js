@@ -17,6 +17,10 @@ export class MotoristasService {
 	}
 
 	async criar({ nome, cpf, placaVeiculo }) {
+		nome = nome.trim();
+		cpf = cpf.trim();
+		placaVeiculo = placaVeiculo.trim();
+
 		const jaExiste = await this.repository.buscarPorCpf(cpf);
 		if (jaExiste) throw new AppError("Motorista já cadastrado", 409);
 

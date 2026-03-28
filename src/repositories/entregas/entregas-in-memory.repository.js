@@ -26,7 +26,7 @@ export class EntregasRepositoryInMemory extends IEntregasRepository {
 	async criar(dados) {
 		return this.database
 			.getEntregas()
-			.push({ id: this.database.generateId(), ...dados });
+			.push({ ...dados, id: this.database.generateId() });
 	}
 
 	async atualizar(id, dados) {

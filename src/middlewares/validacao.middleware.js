@@ -21,7 +21,7 @@ export const validarCriacaoEntrega = (req, res, next) => {
 	next();
 };
 
-export const validarCriacaoEntreg = (req, res, next) => {
+export const validarCriacaoMotorista = (req, res, next) => {
 	const { nome, cpf, placaVeiculo } = req.body;
 
 	if (!nome || typeof nome !== "string" || nome.trim().length < 2) {

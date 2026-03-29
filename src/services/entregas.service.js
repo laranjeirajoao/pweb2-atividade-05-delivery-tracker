@@ -1,9 +1,11 @@
 import { AppError } from "../utils/AppError.js";
 import { EntregaStatus } from "../utils/EntregaStatusEnum.js";
+import { MotoristaStatus } from "../utils/MotoristaStatusEnum.js";
 
 export class EntregasService {
-	constructor(repository) {
+	constructor(repository, motoristasRepository) {
 		this.repository = repository; // Dependência injetada
+		this.motoristasRepository = motoristasRepository;
 	}
 
 	async listarTodos(status) {
@@ -12,7 +14,7 @@ export class EntregasService {
 
 	async buscarPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
-		if (!entrega) throw new AppError("Entrega não encontrado", 404);
+		if (!entrega) throw new AppError("Entrega não encontrada", 404);
 		return entrega;
 	}
 
@@ -38,7 +40,7 @@ export class EntregasService {
 			origem,
 			destino,
 			status: EntregaStatus.CRIADA,
-			historico: [this.criarHistorio("CRIAÇÃO")],
+			historico: [this._criarHistorio("CRIAÇÃO")],
 		};
 
 		return this.repository.criar(novaEntrega);
@@ -99,6 +101,48 @@ export class EntregasService {
 		return await this.atualizar(id, updated);
 	}
 
+	async atribuirMotorista(entregaId, motoristaId) {
+		const obj = await this.buscarPorId(entregaId);
+
+		const motorista =
+			await this.motoristasRepository.buscarPorId(motoristaId);
+		if (!motorista) throw new AppError("Motorista não encontrado", 404);
+
+		if (obj.status !== EntregaStatus.CRIADA) {
+			throw new AppError(
+				`Apenas entregas com status CRIADA estão liberadas para alocação de motoristas! Status atual: ${obj.status}`,
+				422,
+			);
+		}
+		if (motorista.status !== MotoristaStatus.ATIVO) {
+			throw new AppError("Motorista INATIVO não pode ser alocado!", 422);
+		}
+
+		if (obj.motoristaId) {
+			return this.atualizar(entregaId, {
+				...obj,
+				motoristaId,
+				historico: [
+					...obj.historico,
+					this._criarHistorio(
+						`TROCA DE MOTORISTA: #${obj.motoristaId} -> #${motoristaId}`,
+					),
+				],
+			});
+		}
+
+		return this.atualizar(entregaId, {
+			...obj,
+			motoristaId,
+			historico: [
+				...obj.historico,
+				this._criarHistorio(
+					`MOTORISTA #${motoristaId} ATRIBUIDO A ENTREGA`,
+				),
+			],
+		});
+	}
+
 	_atualizarStatus(obj, novoStatus) {
 		let status = obj.status;
 		const mudacaEhValida = this._mudancaStatusEhValida(status, novoStatus);
@@ -114,7 +158,7 @@ export class EntregasService {
 			status: EntregaStatus[novoStatus],
 			historico: [
 				...obj.historico,
-				this.criarHistorio(
+				this._criarHistorio(
 					`ATUALIZAÇÃO DE STATUS: ${status} -> ${novoStatus}`,
 				),
 			],
@@ -141,7 +185,7 @@ export class EntregasService {
 		}
 	}
 
-	criarHistorio(descricao) {
+	_criarHistorio(descricao) {
 		return { data: new Date().toISOString(), descricao };
 	}
 }

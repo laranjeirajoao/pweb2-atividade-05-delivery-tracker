@@ -21,6 +21,10 @@ export class MotoristasService {
 		cpf = cpf.trim();
 		placaVeiculo = placaVeiculo.trim();
 
+		if (!/^\d+$/.test(cpf) || cpf.length !== 11) {
+			throw new AppError("CPF deve ser numérico de 11 digitos", 409);
+		}
+
 		const jaExiste = await this.repository.buscarPorCpf(cpf);
 		if (jaExiste) throw new AppError("Motorista já cadastrado", 409);
 

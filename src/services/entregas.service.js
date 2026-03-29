@@ -8,8 +8,8 @@ export class EntregasService {
 		this.motoristasRepository = motoristasRepository;
 	}
 
-	async listarTodos(status) {
-		return this.repository.listarTodos({ status });
+	async listarTodos(status, motoristaId) {
+		return this.repository.listarTodos({ status, motoristaId });
 	}
 
 	async buscarPorId(id) {

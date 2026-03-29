@@ -1,22 +1,15 @@
 import { Router } from "express";
-import { EntregasController } from "../controllers/entregas.controller.js";
-import { Database } from "../database/database.js";
 import { validarCriacaoEntrega } from "../middlewares/validacao.middleware.js";
-import { EntregasRepositoryInMemory } from "../repositories/entregas/entregas-in-memory.repository.js";
-import { EntregasService } from "../services/entregas.service.js";
-
-const database = new Database();
-const repository = new EntregasRepositoryInMemory(database);
-const service = new EntregasService(repository);
-const controller = new EntregasController(service);
+import { entregasController } from "./composicao-dependencias.js";
 
 const router = Router();
 
-router.post("/", validarCriacaoEntrega, controller.criar);
-router.get("/", controller.listarTodos);
-router.get("/:id", controller.buscarPorId);
-router.patch("/:id/avancar", controller.avancarStatus);
-router.patch("/:id/cancelar", controller.cancelarEntrega);
-router.get("/:id/historico", controller.buscarHistoricoPorId);
+router.post("/", validarCriacaoEntrega, entregasController.criar);
+router.get("/", entregasController.listarTodos);
+router.get("/:id", entregasController.buscarPorId);
+router.patch("/:id/avancar", entregasController.avancarStatus);
+router.patch("/:id/cancelar", entregasController.cancelarEntrega);
+router.get("/:id/historico", entregasController.buscarHistoricoPorId);
+router.patch("/:id/atribuir", entregasController.atribuirMotorista);
 
 export default router;

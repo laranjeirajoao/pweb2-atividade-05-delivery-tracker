@@ -1,19 +1,20 @@
 //
 export class MotoristasController {
-	constructor(service) {
+	constructor(service, entregasService) {
 		this.service = service;
+		this.entregasService = entregasService;
 
 		// Binding necessário para preservar o contexto de `this` nos handlers
 		this.listarTodos = this.listarTodos.bind(this);
 		this.buscarPorId = this.buscarPorId.bind(this);
 		this.criar = this.criar.bind(this);
+		this.buscarEntregas = this.buscarEntregas.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
 		try {
-			const { status } = req.query;
-			const entregas = await this.service.listarTodos(status);
-			res.json(entregas);
+			const motoristas = await this.service.listarTodos();
+			res.json(motoristas);
 		} catch (err) {
 			next(err);
 		}
@@ -21,8 +22,10 @@ export class MotoristasController {
 
 	async buscarPorId(req, res, next) {
 		try {
-			const entrega = await this.service.buscarPorId(Number(req.params.id));
-			res.json(entrega);
+			const motorista = await this.service.buscarPorId(
+				Number(req.params.id),
+			);
+			res.json(motorista);
 		} catch (err) {
 			next(err);
 		}
@@ -30,8 +33,22 @@ export class MotoristasController {
 
 	async criar(req, res, next) {
 		try {
-			const novaEntrega = await this.service.criar(req.body);
-			res.status(201).json(novaEntrega);
+			const novoMotorista = await this.service.criar(req.body);
+			res.status(201).json(novoMotorista);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async buscarEntregas(req, res, next) {
+		try {
+			const { status } = req.query;
+			const motoristaId = Number(req.params.id);
+			const entregas = await this.entregasService.listarTodos(
+				status,
+				motoristaId,
+			);
+			res.json(entregas);
 		} catch (err) {
 			next(err);
 		}

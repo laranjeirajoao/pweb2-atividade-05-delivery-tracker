@@ -6,7 +6,7 @@ export class EntregasRepositoryInMemory extends IEntregasRepository {
 		this.database = database;
 	}
 
-	async listarTodos({ descricao, origem, destino, status } = {}) {
+	async listarTodos({ descricao, origem, destino, status, motoristaId } = {}) {
 		return this.database.getEntregas().filter((entrega) => {
 			if (descricao && entrega.descricao !== descricao) return false;
 			if (origem && entrega.origem !== origem) return false;
@@ -15,6 +15,8 @@ export class EntregasRepositoryInMemory extends IEntregasRepository {
 				const statusList = Array.isArray(status) ? status : [status];
 				if (!statusList.includes(entrega.status)) return false;
 			}
+			if (motoristaId && entrega.motoristaId !== motoristaId) return false;
+
 			return true;
 		});
 	}
@@ -26,7 +28,7 @@ export class EntregasRepositoryInMemory extends IEntregasRepository {
 	async criar(dados) {
 		return this.database
 			.getEntregas()
-			.push({ ...dados, id: this.database.generateId() });
+			.push({ ...dados, motoristaId: null, id: this.database.generateId() });
 	}
 
 	async atualizar(id, dados) {

@@ -1,6 +1,14 @@
 import { IEntregasRepository } from "./ientregas.repository.js";
+/** @import { Database } from '../../database/database.js' */
+/** @import { IEntregasRepository } from './ientregas.repository.js' */
 
+/**
+ * @extends {IEntregasRepository}
+ */
 export class EntregasRepositoryInMemory extends IEntregasRepository {
+	/**
+	 * @param {Database} database
+	 */
 	constructor(database) {
 		super();
 		this.database = database;
@@ -26,9 +34,13 @@ export class EntregasRepositoryInMemory extends IEntregasRepository {
 	}
 
 	async criar(dados) {
-		return this.database
-			.getEntregas()
-			.push({ ...dados, motoristaId: null, id: this.database.generateId() });
+		const novaEntrega = {
+			...dados,
+			motoristaId: null,
+			id: this.database.generateId(),
+		};
+		this.database.getEntregas().push(novaEntrega);
+		return novaEntrega;
 	}
 
 	async atualizar(id, dados) {

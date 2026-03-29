@@ -7,6 +7,6 @@ const router = Router();
 router.post("/", validarCriacaoMotorista, motoristasController.criar);
 router.get("/", motoristasController.listarTodos);
 router.get("/:id", motoristasController.buscarPorId);
-// router.get("/:id/entregas", motoristasController.buscarPorId)
+router.get("/:id/entregas", motoristasController.buscarEntregas);
 
 export default router;

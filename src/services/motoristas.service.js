@@ -25,7 +25,7 @@ export class MotoristasService {
 			throw new AppError("CPF deve ser numérico de 11 digitos", 409);
 		}
 
-		const jaExiste = await this.repository.buscarPorCpf(cpf);
+		const jaExiste = await this.repository.buscarPorCPF(cpf);
 		if (jaExiste) throw new AppError("Motorista já cadastrado", 409);
 
 		const novoMotorista = {

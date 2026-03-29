@@ -1,6 +1,16 @@
 import { IMotoristasRepository } from "./imotoristas.repository.js";
 
+/** @import { Database } from '../../database/database.js' */
+/** @import { IMotoristasRepository } from './imotoristas.repository.js' */
+
+/**
+ * @extends {IMotoristasRepository}
+ */
+
 export class MotoristasRepositoryInMemory extends IMotoristasRepository {
+	/**
+	 * @param {Database} database
+	 */
 	constructor(database) {
 		super();
 		this.database = database;

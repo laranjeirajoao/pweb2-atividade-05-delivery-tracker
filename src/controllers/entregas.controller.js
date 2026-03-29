@@ -10,6 +10,7 @@ export class EntregasController {
 		this.buscarHistoricoPorId = this.buscarHistoricoPorId.bind(this);
 		this.avancarStatus = this.avancarStatus.bind(this);
 		this.cancelarEntrega = this.cancelarEntrega.bind(this);
+		this.atribuirMotorista = this.atribuirMotorista.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
@@ -66,6 +67,19 @@ export class EntregasController {
 		try {
 			const historico = await this.service.buscarHistoricoPorId(
 				Number(req.params.id),
+			);
+			res.json(historico);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async atribuirMotorista(req, res, next) {
+		try {
+			const { motoristaId } = req.body;
+			const historico = await this.service.atribuirMotorista(
+				Number(req.params.id),
+				Number(motoristaId),
 			);
 			res.json(historico);
 		} catch (err) {

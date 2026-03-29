@@ -20,3 +20,27 @@ export const validarCriacaoEntrega = (req, res, next) => {
 
 	next();
 };
+
+export const validarCriacaoEntreg = (req, res, next) => {
+	const { nome, cpf, placaVeiculo } = req.body;
+
+	if (!nome || typeof nome !== "string" || nome.trim().length < 2) {
+		return res.status(400).json({ erro: "Nome de motorista inválido!" });
+	}
+
+	if (!cpf || typeof cpf !== "string" || cpf.trim().length !== 11) {
+		return res.status(400).json({
+			erro: "CPF inválido! Quantidade de caracteres esperados: 11",
+		});
+	}
+
+	if (
+		!placaVeiculo ||
+		typeof placaVeiculo !== "string" ||
+		placaVeiculo.trim().length < 2
+	) {
+		return res.status(400).json({ erro: "Placa de Veiculo inválida!" });
+	}
+
+	next();
+};

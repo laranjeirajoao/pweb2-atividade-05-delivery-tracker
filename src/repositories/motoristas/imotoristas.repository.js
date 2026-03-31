@@ -27,7 +27,7 @@ export class IMotoristasRepository {
 	 * Função que recebe um id e busca um objeto de id correspondente
 	 * @abstract
 	 * @param {number} id - ID do motorista
-	 * @returns {Promise<Motorista>}
+	 * @returns {Promise<Motorista | null>}
 	 */
 	async buscarPorId(id) {
 		throw new Error("Não implementado");
@@ -37,7 +37,7 @@ export class IMotoristasRepository {
 	 * Função que recebe um CPF e busca um objeto de correspondente
 	 * @abstract
 	 * @param {string} cpf - CPF do motorista
-	 * @returns {Promise<Motorista>}
+	 * @returns {Promise<Motorista | null>}
 	 */
 	async buscarPorCPF(cpf) {
 		throw new Error("Não implementado");

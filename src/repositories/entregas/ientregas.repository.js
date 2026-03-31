@@ -27,7 +27,7 @@ export class IEntregasRepository {
 	 * Função que recebe um id busca um objeto de id correspondente
 	 * @abstract
 	 * @param {number} id - ID da entrega
-	 * @returns {Promise<Entrega>}
+	 * @returns {Promise<Entrega | null>}
 	 */
 	async buscarPorId(id) {
 		throw new Error("Não implementado");

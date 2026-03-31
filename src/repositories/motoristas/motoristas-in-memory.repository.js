@@ -29,9 +29,12 @@ export class MotoristasRepositoryInMemory extends IMotoristasRepository {
 	}
 
 	async criar(dados) {
-		return this.database
-			.getMotoristas()
-			.push({ ...dados, id: this.database.generateId() });
+		const novoMotorista = {
+			...dados,
+			id: this.database.generateId(),
+		};
+		this.database.getMotoristas().push(novoMotorista);
+		return novoMotorista;
 	}
 
 	async atualizar(id, dados) {

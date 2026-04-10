@@ -1,0 +1,7 @@
+import { Pool } from "pg";
+
+export const pool = new Pool({
+	connectionString: process.env.DATABASE_URL,
+	max: 10, // máximo de conexões simultâneas no pool
+	idleTimeoutMillis: 30000,
+});

@@ -5,6 +5,8 @@ export class EntregasController {
 
 		// Binding necessário para preservar o contexto de `this` nos handlers
 		this.listarTodos = this.listarTodos.bind(this);
+		this.listarEntregasPorStatusAgrupados =
+			this.listarEntregasPorStatusAgrupados.bind(this);
 		this.buscarPorId = this.buscarPorId.bind(this);
 		this.criar = this.criar.bind(this);
 		this.buscarHistoricoPorId = this.buscarHistoricoPorId.bind(this);
@@ -17,6 +19,15 @@ export class EntregasController {
 		try {
 			const { status } = req.query;
 			const entregas = await this.service.listarTodos(status);
+			res.json(entregas);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async listarEntregasPorStatusAgrupados(req, res, next) {
+		try {
+			const entregas = await this.service.listarEntregasPorStatusAgrupados();
 			res.json(entregas);
 		} catch (err) {
 			next(err);

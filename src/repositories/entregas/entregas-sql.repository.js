@@ -48,6 +48,26 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 		return (await pool.query(query, params)).rows;
 	}
 
+	async listarEntregasPorStatusAgrupados() {
+		const { rows } = await pool.query(
+			"SELECT status, COUNT(*) FROM ENTREGAS GROUP BY status",
+		);
+
+		const transformed = rows.reduce((prev, curr) => {
+			if (!prev) {
+				return {
+					[curr.status]: curr.count,
+				};
+			}
+			return {
+				...prev,
+				[curr.status]: curr.count,
+			};
+		}, null);
+
+		return transformed;
+	}
+
 	async buscarPorId(id) {
 		const { rows } = await pool.query(
 			"SELECT e.id, e.descricao, e.origem, e.destino, e.status, e.motorista_id as motoristaid, he.id as id_historico, he.descricao as descricao_historico, he.data_evento as data_historico FROM ENTREGAS e LEFT JOIN EVENTOS_ENTREGA he ON e.id = he.entrega_id WHERE e.id = $1",

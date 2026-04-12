@@ -12,6 +12,10 @@ export class EntregasService {
 		return this.repository.listarTodos({ status, motoristaId });
 	}
 
+	async listarEntregasPorStatusAgrupados() {
+		return this.repository.listarEntregasPorStatusAgrupados();
+	}
+
 	async buscarPorId(id) {
 		const entrega = await this.repository.buscarPorId(id);
 		if (!entrega) throw new AppError("Entrega não encontrada", 404);

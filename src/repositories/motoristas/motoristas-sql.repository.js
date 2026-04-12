@@ -29,12 +29,13 @@ export class MotoristasRepositorySQL extends IMotoristasRepository {
 	}
 
 	async criar(dados) {
-		const novoMotorista = {
-			...dados,
-			id: this.database.generateId(),
-		};
-		this.database.getMotoristas().push(novoMotorista);
-		return novoMotorista;
+		const { nome, cpf, placaVeiculo } = dados;
+		const { rows } = await pool.query(
+			"INSERT INTO MOTORISTAS (nome, cpf, placa_veiculo) VALUES ($1, $2, $3) RETURNING id, nome, cpf, placa_veiculo as placaVeiculo",
+			[nome, cpf, placaVeiculo],
+		);
+
+		return rows[0] ?? null;
 	}
 
 	async atualizar(id, dados) {

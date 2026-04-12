@@ -57,13 +57,23 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 	}
 
 	async criar(dados) {
-		const novaEntrega = {
-			...dados,
-			motoristaId: null,
-			id: this.database.generateId(),
-		};
-		this.database.getEntregas().push(novaEntrega);
-		return novaEntrega;
+		const { descricao, origem, destino, status, historico } = dados;
+
+		const { rows } = await pool.query(
+			"INSERT INTO ENTREGAS (descricao, origem, destino, status, motorista_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, descricao, origem, destino, status, motorista_id as motoristaId",
+			[descricao, origem, destino, status, null],
+		);
+		const newEntrega = rows[0];
+
+		historico.map(
+			async (item) =>
+				await pool.query(
+					"INSERT INTO EVENTOS_ENTREGA (descricao, entrega_id) VALUES ($1, $2)",
+					[item.descricao, newEntrega.id],
+				),
+		);
+
+		return newEntrega;
 	}
 
 	async atualizar(id, dados) {

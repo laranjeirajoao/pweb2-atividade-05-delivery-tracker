@@ -112,10 +112,45 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 	async atualizar(id, dados) {
 		const { descricao, origem, destino, status, motoristaId, historico } =
 			dados;
-		const { rows } = await pool.query(
-			"UPDATE ENTREGAS SET descricao = $1, origem = $2, destino = $3, status = $4, motorista_id = $5 WHERE id = $6 RETURNING id, descricao, origem, destino, status, motorista_id as motoristaId",
-			[descricao, origem, destino, status, motoristaId, id],
-		);
+
+		let query = "UPDATE ENTREGAS SET ";
+		let condicoes = [];
+		let params = [];
+
+		if (descricao) {
+			params.push(descricao);
+			condicoes.push(`descricao = $${params.length}`);
+		}
+
+		if (origem) {
+			params.push(origem);
+			condicoes.push(`origem = $${params.length}`);
+		}
+
+		if (destino) {
+			params.push(destino);
+			condicoes.push(`destino = $${params.length}`);
+		}
+
+		if (status) {
+			params.push(status);
+			condicoes.push(`status = $${params.length}`);
+		}
+
+		if (motoristaId) {
+			params.push(motoristaId);
+			condicoes.push(`motorista_id = $${params.length}`);
+		}
+
+		params.push(id);
+		query +=
+			condicoes.join(", ") +
+			` WHERE id = $${params.length} RETURNING id, descricao, origem, destino, status, motorista_id as motoristaId`;
+
+		console.log(query);
+		console.log(params);
+
+		const { rows } = await pool.query(query, params);
 		const updatedEntrega = rows[0];
 
 		historico.map(async (item) => {

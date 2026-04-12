@@ -50,10 +50,43 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 
 	async buscarPorId(id) {
 		const { rows } = await pool.query(
-			"SELECT * FROM ENTREGAS WHERE ID = $1",
+			"SELECT e.id, e.descricao, e.origem, e.destino, e.status, e.motorista_id as motoristaId, he.id as id_historico, he.descricao as descricao_historico, he.data_evento as data_historico FROM ENTREGAS e LEFT JOIN EVENTOS_ENTREGA he ON e.id = he.entrega_id WHERE e.id = $1",
 			[id],
 		);
-		return rows ?? null;
+
+		return rows.length > 0
+			? rows.reduce((prev, curr) => {
+					if (!prev) {
+						const entregaAgregada = {
+							id: curr.id,
+							descricao: curr.descricao,
+							origem: curr.origem,
+							destino: curr.destino,
+							status: curr.status,
+							motoristaId: curr.motoristaId ?? null,
+							historico: [],
+						};
+
+						if (curr.id_historico) {
+							entregaAgregada.historico.push({
+								id: curr.id_historico,
+								descricao: curr.descricao_historico,
+								data: curr.data_historico,
+							});
+						}
+
+						return entregaAgregada;
+					}
+					if (curr.id_historico) {
+						prev.historico.push({
+							id: curr.id_historico,
+							descricao: curr.descricao_historico,
+							data: curr.data_historico,
+						});
+					}
+					return prev;
+				}, null)
+			: null;
 	}
 
 	async criar(dados) {

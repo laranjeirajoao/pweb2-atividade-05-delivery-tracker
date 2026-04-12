@@ -39,15 +39,11 @@ export class MotoristasRepositorySQL extends IMotoristasRepository {
 	}
 
 	async atualizar(id, dados) {
-		const indice = this.database
-			.getMotoristas()
-			.findIndex((u) => u.id === id);
-		if (indice === -1) return null;
-		this.database.getMotoristas()[indice] = {
-			...this.database.getMotoristas()[indice],
-			...dados,
-			id,
-		};
-		return this.database.getMotoristas()[indice];
+		const { nome, cpf, placaVeiculo, status } = dados;
+		const { rows } = await pool.query(
+			"UPDATE ENTREGAS SET nome = $1, cpf = $2, placa_veiculo = $3, status $4 WHERE id = $5 RETURNING id, nome, cpf, placa_veiculo as placaVeiculo",
+			[nome, cpf, placaVeiculo, status, id],
+		);
+		return rows[0] ?? null;
 	}
 }

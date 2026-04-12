@@ -12,31 +12,33 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 		let params = [];
 
 		if (descricao) {
-			condicoes.push("descricao = ?");
 			params.push(descricao);
+			condicoes.push(`descricao = $${params.length}`);
 		}
 
 		if (origem) {
-			condicoes.push("origem = ?");
 			params.push(origem);
+			condicoes.push(`origem = $${params.length}`);
 		}
 
 		if (destino) {
-			condicoes.push("destino = ?");
 			params.push(destino);
+			condicoes.push(`destino = $${params.length}`);
 		}
 
 		if (status) {
 			const lista = Array.isArray(status) ? status : [status];
 			// a idea é criar algo como status in (?, ?) dependendo da quantidade de objetos na lista
-			const placeholders = lista.map(() => "?").join(", ");
+			const placeholders = lista
+				.map((_, idx) => `$${params.length + idx + 1}`)
+				.join(", ");
 			condicoes.push(`status in (${placeholders})`);
 			params.push(...lista);
 		}
 
 		if (motoristaId) {
-			condicoes.push("motorista_id = ?");
 			params.push(motoristaId);
+			condicoes.push(`motorista_id = $${params.length}`);
 		}
 
 		if (condicoes.length > 0) {

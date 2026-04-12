@@ -50,7 +50,7 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 
 	async buscarPorId(id) {
 		const { rows } = await pool.query(
-			"SELECT e.id, e.descricao, e.origem, e.destino, e.status, e.motorista_id as motoristaId, he.id as id_historico, he.descricao as descricao_historico, he.data_evento as data_historico FROM ENTREGAS e LEFT JOIN EVENTOS_ENTREGA he ON e.id = he.entrega_id WHERE e.id = $1",
+			"SELECT e.id, e.descricao, e.origem, e.destino, e.status, e.motorista_id as motoristaid, he.id as id_historico, he.descricao as descricao_historico, he.data_evento as data_historico FROM ENTREGAS e LEFT JOIN EVENTOS_ENTREGA he ON e.id = he.entrega_id WHERE e.id = $1",
 			[id],
 		);
 
@@ -63,7 +63,7 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 							origem: curr.origem,
 							destino: curr.destino,
 							status: curr.status,
-							motoristaId: curr.motoristaId ?? null,
+							motoristaId: curr.motoristaid ?? null,
 							historico: [],
 						};
 

@@ -1,4 +1,6 @@
+import { DatabaseError } from "pg";
 import { pool } from "../../database/postgres.js";
+import { MotoristaDuplicadoException } from "../../exceptions/MotoristaDuplicadoException.js";
 import { IMotoristasRepository } from "./imotoristas.repository.js";
 
 /** @import { IMotoristasRepository } from './imotoristas.repository.js' */
@@ -30,12 +32,24 @@ export class MotoristasRepositorySQL extends IMotoristasRepository {
 
 	async criar(dados) {
 		const { nome, cpf, placaVeiculo } = dados;
-		const { rows } = await pool.query(
-			"INSERT INTO MOTORISTAS (nome, cpf, placa_veiculo) VALUES ($1, $2, $3) RETURNING id, nome, cpf, placa_veiculo as placaVeiculo",
-			[nome, cpf, placaVeiculo],
-		);
+		try {
+			const { rows } = await pool.query(
+				"INSERT INTO MOTORISTAS (nome, cpf, placa_veiculo) VALUES ($1, $2, $3) RETURNING id, nome, cpf, placa_veiculo as placaVeiculo",
+				[nome, cpf, placaVeiculo],
+			);
 
-		return rows[0] ?? null;
+			return rows[0] ?? null;
+		} catch (e) {
+			if (
+				e instanceof DatabaseError &&
+				e.constraint === "motoristas_cpf_key"
+			) {
+				throw new MotoristaDuplicadoException(
+					"Já existe um motorista com esse CPF cadastrado!",
+				);
+			}
+			throw e;
+		}
 	}
 
 	async atualizar(id, dados) {

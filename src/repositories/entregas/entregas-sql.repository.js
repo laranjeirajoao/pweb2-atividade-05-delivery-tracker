@@ -110,13 +110,27 @@ export class EntregasRepositorySQL extends IEntregasRepository {
 	}
 
 	async atualizar(id, dados) {
-		const indice = this.database.getEntregas().findIndex((u) => u.id === id);
-		if (indice === -1) return null;
-		this.database.getEntregas()[indice] = {
-			...this.database.getEntregas()[indice],
-			...dados,
-			id,
-		};
-		return this.database.getEntregas()[indice];
+		const { descricao, origem, destino, status, motoristaId, historico } =
+			dados;
+		const { rows } = await pool.query(
+			"UPDATE ENTREGAS SET descricao = $1, origem = $2, destino = $3, status = $4, motorista_id = $5 WHERE id = $6 RETURNING id, descricao, origem, destino, status, motorista_id as motoristaId",
+			[descricao, origem, destino, status, motoristaId, id],
+		);
+		const updatedEntrega = rows[0];
+
+		historico.map(async (item) => {
+			if (!item.id) {
+				return await pool.query(
+					"INSERT INTO EVENTOS_ENTREGA (descricao, entrega_id) VALUES ($1, $2)",
+					[item.descricao, updatedEntrega.id],
+				);
+			}
+			return await pool.query(
+				"UPDATE EVENTOS_ENTREGA SET descricao = $1 WHERE id = $2",
+				[item.descricao, item.id],
+			);
+		});
+
+		return updatedEntrega;
 	}
 }

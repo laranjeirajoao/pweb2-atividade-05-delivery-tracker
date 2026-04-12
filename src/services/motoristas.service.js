@@ -10,6 +10,10 @@ export class MotoristasService {
 		return this.repository.listarTodos();
 	}
 
+	async listarMotoristasComEntregasAtivas() {
+		return this.repository.listarMotoristasComEntregasAtivas();
+	}
+
 	async buscarPorId(id) {
 		const motorista = await this.repository.buscarPorId(id);
 		if (!motorista) throw new AppError("Motorista não encontrado", 404);

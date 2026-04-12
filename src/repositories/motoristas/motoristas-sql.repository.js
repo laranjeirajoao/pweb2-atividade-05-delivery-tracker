@@ -30,6 +30,14 @@ export class MotoristasRepositorySQL extends IMotoristasRepository {
 		return rows[0] ?? null;
 	}
 
+	async listarMotoristasComEntregasAtivas() {
+		return (
+			await pool.query(
+				"SELECT m.id, m.nome, COUNT(e.id) AS entregasEmAberto FROM motoristas m JOIN entregas e ON e.motorista_id = m.id WHERE e.status NOT IN ('ENTREGUE', 'CANCELADA') GROUP BY m.id, m.nome HAVING COUNT(e.id) > 0;",
+			)
+		).rows;
+	}
+
 	async criar(dados) {
 		const { nome, cpf, placaVeiculo } = dados;
 		try {

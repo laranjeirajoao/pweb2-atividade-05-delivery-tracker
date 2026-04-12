@@ -9,6 +9,7 @@ export class MotoristasController {
 		this.buscarPorId = this.buscarPorId.bind(this);
 		this.criar = this.criar.bind(this);
 		this.buscarEntregas = this.buscarEntregas.bind(this);
+		this.listarMotoristasAtivos = this.listarMotoristasAtivos.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
@@ -48,6 +49,16 @@ export class MotoristasController {
 				status,
 				motoristaId,
 			);
+			res.json(entregas);
+		} catch (err) {
+			next(err);
+		}
+	}
+
+	async listarMotoristasAtivos(req, res, next) {
+		try {
+			const entregas =
+				await this.service.listarMotoristasComEntregasAtivas();
 			res.json(entregas);
 		} catch (err) {
 			next(err);

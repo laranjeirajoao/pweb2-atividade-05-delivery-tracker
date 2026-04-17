@@ -20,6 +20,7 @@ model Motorista {
   cpf String @unique
   placa_veiculo String @unique
   status MotoristaStatus @default(ATIVO)
+  entregas Entrega[]
 } 
 
 enum MotoristaStatus{

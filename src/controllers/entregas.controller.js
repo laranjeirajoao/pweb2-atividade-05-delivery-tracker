@@ -17,11 +17,13 @@ export class EntregasController {
 
 	async listarTodos(req, res, next) {
 		try {
-			const { status, page, limit } = req.query;
+			const { status, page, limit, createdDe, createdAte } = req.query;
 			const entregas = await this.service.listarTodos({
 				status,
 				page,
 				limit,
+				createdDe,
+				createdAte,
 			});
 			res.json(entregas);
 		} catch (err) {

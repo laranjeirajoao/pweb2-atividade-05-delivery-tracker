@@ -29,7 +29,19 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 	}
 
 	async criar(dados) {
-		// todo
+		return await prisma.entrega.create({
+			data: {
+				descricao: dados.descricao,
+				destino: dados.destino,
+				origem: dados.origem,
+				status: dados.status,
+				eventos: {
+					create: dados.historico.map((item) => {
+						return { descricao: item.descricao };
+					}),
+				},
+			},
+		});
 	}
 
 	async atualizar(id, dados) {

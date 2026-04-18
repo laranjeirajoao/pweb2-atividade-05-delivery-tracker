@@ -8,8 +8,8 @@ export class EntregasService {
 		this.motoristasRepository = motoristasRepository;
 	}
 
-	async listarTodos(status, motoristaId) {
-		return this.repository.listarTodos({ status, motoristaId });
+	async listarTodos({ status, motoristaId, page, limit }) {
+		return this.repository.listarTodos({ status, motoristaId, page, limit });
 	}
 
 	async listarEntregasPorStatusAgrupados() {
@@ -37,7 +37,7 @@ export class EntregasService {
 			destino,
 			status: [EntregaStatus.CRIADA, EntregaStatus.EM_TRANSITO],
 		});
-		if (jaExiste.length > 0) throw new AppError("Entrega já cadastrada", 409);
+		if (jaExiste.total > 0) throw new AppError("Entrega já cadastrada", 409);
 
 		const novaEntrega = {
 			descricao,

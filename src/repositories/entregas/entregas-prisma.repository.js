@@ -6,7 +6,27 @@ import { IEntregasRepository } from "./ientregas.repository.js";
  * @extends {IEntregasRepository}
  */
 export class EntregasRepositoryPrisma extends IEntregasRepository {
-	async listarTodos({ descricao, origem, destino, status, motoristaId } = {}) {
+	async listarTodos({
+		descricao,
+		origem,
+		destino,
+		status,
+		motoristaId,
+		page = 1,
+		limit = 10,
+	} = {}) {
+		const parsedPage = Number(page);
+		const parsedLimit = Number(limit);
+
+		page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
+
+		limit =
+			Number.isFinite(parsedLimit) && parsedLimit > 0
+				? Math.min(parsedLimit, 50)
+				: 10;
+
+		const skip = (page - 1) * limit;
+
 		const where = {
 			...(descricao && { descricao }),
 			...(origem && { origem }),
@@ -17,7 +37,23 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 			...(motoristaId && { motorista_id: motoristaId }),
 		};
 
-		return await prisma.entrega.findMany({ where });
+		const [data, total] = await Promise.all([
+			prisma.entrega.findMany({
+				where,
+				skip,
+				take: limit,
+				orderBy: { id: "asc" },
+			}),
+			prisma.entrega.count({ where }),
+		]);
+
+		return {
+			data,
+			total,
+			page,
+			limit,
+			totalPages: Math.ceil(total / limit),
+		};
 	}
 
 	async listarEntregasPorStatusAgrupados() {

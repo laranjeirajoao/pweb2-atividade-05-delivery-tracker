@@ -35,7 +35,7 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				destino: dados.destino,
 				origem: dados.origem,
 				status: dados.status,
-				eventos: {
+				historico: {
 					create: dados.historico.map((item) => {
 						return { descricao: item.descricao };
 					}),

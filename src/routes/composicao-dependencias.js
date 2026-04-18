@@ -1,8 +1,8 @@
 // src/bootstrap.js
 import { EntregasController } from "../controllers/entregas.controller.js";
 import { MotoristasController } from "../controllers/motoristas.controller.js";
-import { EntregasRepositorySQL as EntregasRepository } from "../repositories/entregas/entregas-sql.repository.js";
-import { MotoristasRepositorySQL as MotoristasRepository } from "../repositories/motoristas/motoristas-sql.repository.js";
+import { EntregasRepositoryPrisma as EntregasRepository } from "../repositories/entregas/entregas-prisma.repository.js";
+import { MotoristasRepositoryPrisma as MotoristasRepository } from "../repositories/motoristas/motoristas-prisma.repository.js";
 import { EntregasService } from "../services/entregas.service.js";
 import { MotoristasService } from "../services/motoristas.service.js";
 

@@ -38,7 +38,7 @@ model Entrega {
   status EntregaStatus @default(CRIADA)
   motorista Motorista? @relation(fields: [motorista_id], references: [id])
   motorista_id Int?
-  eventos EventoEntrega[]
+  historico EventoEntrega[]
 }
 
 enum EntregaStatus{

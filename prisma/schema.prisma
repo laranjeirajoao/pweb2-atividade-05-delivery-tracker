@@ -18,7 +18,7 @@ model Motorista {
   updatedAt DateTime @updatedAt
   nome String
   cpf String @unique
-  placa_veiculo String @unique
+  placa_veiculo String
   status MotoristaStatus @default(ATIVO)
   entregas Entrega[]
 } 

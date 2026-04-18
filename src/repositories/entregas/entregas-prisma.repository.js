@@ -21,10 +21,22 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 	}
 
 	async listarEntregasPorStatusAgrupados() {
-		return await prisma.entrega.groupBy({
-			by: "status",
+		const resultado = await prisma.entrega.groupBy({
+			by: ["status"],
 			_count: true,
 		});
+
+		const base = {
+			CRIADA: 0,
+			EM_TRANSITO: 0,
+			ENTREGUE: 0,
+			CANCELADA: 0,
+		};
+
+		return resultado.reduce((acc, item) => {
+			acc[item.status] = item._count;
+			return acc;
+		}, base);
 	}
 
 	async buscarPorId(id) {

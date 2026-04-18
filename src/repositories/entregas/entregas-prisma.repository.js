@@ -70,6 +70,7 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				destino: dados.destino,
 				origem: dados.origem,
 				status: dados.status,
+				motorista_id: dados.motoristaId,
 				historico: {
 					update: dados.historico
 						.filter((item) => item.id)

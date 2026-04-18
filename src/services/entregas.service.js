@@ -8,8 +8,22 @@ export class EntregasService {
 		this.motoristasRepository = motoristasRepository;
 	}
 
-	async listarTodos({ status, motoristaId, page, limit }) {
-		return this.repository.listarTodos({ status, motoristaId, page, limit });
+	async listarTodos({
+		status,
+		motoristaId,
+		page,
+		limit,
+		createdDe,
+		createdAte,
+	}) {
+		return this.repository.listarTodos({
+			status,
+			motoristaId,
+			page,
+			limit,
+			createdDe,
+			createdAte,
+		});
 	}
 
 	async listarEntregasPorStatusAgrupados() {

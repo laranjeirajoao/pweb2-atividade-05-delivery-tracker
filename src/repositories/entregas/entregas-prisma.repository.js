@@ -14,6 +14,8 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 		motoristaId,
 		page = 1,
 		limit = 10,
+		createdDe,
+		createdAte,
 	} = {}) {
 		const parsedPage = Number(page);
 		const parsedLimit = Number(limit);
@@ -35,6 +37,12 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				status: { in: Array.isArray(status) ? status : [status] },
 			}),
 			...(motoristaId && { motorista_id: motoristaId }),
+			...((createdDe || createdAte) && {
+				createdAt: {
+					...(createdDe && { gte: createdDe }),
+					...(createdAte && { lte: createdAte }),
+				},
+			}),
 		};
 
 		const [data, total] = await Promise.all([

@@ -51,6 +51,25 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 	}
 
 	async atualizar(id, dados) {
-		// todo
+		return await prisma.entrega.update({
+			where: { id },
+			data: {
+				descricao: dados.descricao,
+				destino: dados.destino,
+				origem: dados.origem,
+				status: dados.status,
+				historico: {
+					update: dados.historico
+						.filter((item) => item.id)
+						.map((item) => ({
+							where: { id: item.id },
+							data: { descricao: item.descricao },
+						})),
+					create: dados.historico
+						.filter((item) => !item.id)
+						.map((item) => ({ descricao: item.descricao })),
+				},
+			},
+		});
 	}
 }

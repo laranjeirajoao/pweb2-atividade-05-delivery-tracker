@@ -1,3 +1,4 @@
+import { prisma } from "../../database/prisma.js";
 import { IEntregasRepository } from "./ientregas.repository.js";
 /** @import { IEntregasRepository } from './ientregas.repository.js' */
 
@@ -6,7 +7,7 @@ import { IEntregasRepository } from "./ientregas.repository.js";
  */
 export class EntregasRepositoryPrisma extends IEntregasRepository {
 	async listarTodos({ descricao, origem, destino, status, motoristaId } = {}) {
-		//todo
+		return await prisma.entrega.findMany();
 	}
 
 	async listarEntregasPorStatusAgrupados() {

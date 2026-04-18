@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { validarCriacaoEntrega } from "../middlewares/validacao.middleware.js";
+import {
+	validarCriacaoEntrega,
+	validarDatasNaQuery,
+} from "../middlewares/validacao.middleware.js";
 import { entregasController } from "./composicao-dependencias.js";
 
 const router = Router();
 
 router.post("/", validarCriacaoEntrega, entregasController.criar);
-router.get("/", entregasController.listarTodos);
+router.get("/", validarDatasNaQuery, entregasController.listarTodos);
 router.get("/:id", entregasController.buscarPorId);
 router.patch("/:id/avancar", entregasController.avancarStatus);
 router.patch("/:id/cancelar", entregasController.cancelarEntrega);

@@ -44,3 +44,20 @@ export const validarCriacaoMotorista = (req, res, next) => {
 
 	next();
 };
+
+export const validarDatasNaQuery = (req, res, next) => {
+	const { createdDe, createdAte } = req.query;
+
+	const isoRegex =
+		/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}:\d{2}(\.\d{3})?(Z|[+-]\d{2}:\d{2})?)?$/;
+
+	if (createdDe && !isoRegex.test(createdDe)) {
+		return res.status(400).json({ erro: "createdDe inválido!" });
+	}
+
+	if (createdAte && !isoRegex.test(createdAte)) {
+		return res.status(400).json({ erro: "createdAte inválido!" });
+	}
+
+	next();
+};

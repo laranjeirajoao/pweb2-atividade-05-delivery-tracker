@@ -21,11 +21,17 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 	}
 
 	async listarEntregasPorStatusAgrupados() {
-		// todo
+		return await prisma.entrega.groupBy({
+			by: "status",
+			_count: true,
+		});
 	}
 
 	async buscarPorId(id) {
-		// todo
+		return await prisma.entrega.findUnique({
+			where: { id },
+			include: { historico: true, motorista: true },
+		});
 	}
 
 	async criar(dados) {

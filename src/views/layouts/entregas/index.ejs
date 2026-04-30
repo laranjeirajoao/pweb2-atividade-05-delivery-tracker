@@ -1,0 +1,12 @@
+<%- include('../../partials/header', { titulo: 'Minha API de Entregas' }) %>
+<%- include('../../partials/navbar') %>
+
+<ul>
+   <% entregas && entregas.forEach(item => { %>
+      <li>
+         <%= item.descricao %>
+      </li>
+      <% }); %>
+</ul>
+
+<%- include('../../partials/footer') %>

@@ -51,6 +51,7 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				skip,
 				take: limit,
 				orderBy: { id: "asc" },
+				include: { motorista: true },
 			}),
 			prisma.entrega.count({ where }),
 		]);

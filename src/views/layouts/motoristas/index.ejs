@@ -1,0 +1,29 @@
+<%- include('../../partials/header', { titulo: 'Minha API de Entregas' }) %>
+<%- include('../../partials/navbar') %>
+
+<table>
+   <tr>
+      <th>Nome</th>
+      <th>CPF</th>
+      <th>Placa do Veículo</th>
+      <th>Status</th>
+   </tr>
+   <% motoristas && motoristas.forEach(item=> { %>
+      <tr>
+         <td>
+            <%= item.nome %>
+         </td>
+         <td>
+            <%= item.cpf %>
+         </td>
+         <td>
+            <%= item.placa_veiculo %>
+         </td>
+         <td>
+            <%= item.status.split("_").join(" ") %>
+         </td>
+      </tr>
+      <% }); %>
+</table>
+
+<%- include('../../partials/footer') %>

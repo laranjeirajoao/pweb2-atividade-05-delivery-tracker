@@ -1,30 +1,45 @@
-<%- include('../../partials/header', { titulo: 'Minha API de Entregas' }) %>
+<%- include('../../partials/header', { titulo: 'Minha API de/Painel Entregas' }) %>
 <%- include('../../partials/navbar') %>
 
-<table>
-   <tr>
-      <th>Descrição</th>
-      <th>Origem</th>
-      <th>Destino</th>
-      <th>Status</th>
-      <th>Motorista</th>
-      <th>Data de criação</th>
-   </tr>
-
-   <% entregas && entregas.forEach(item=> { %>
+<table id="tabela/painel-entregas">
+   <thead>
       <tr>
-         <td><%= item.descricao %></td>
-         <td><%= item.origem %></td>
-         <td><%= item.destino %></td>
-         <td><%= item.status.split("_").join(" ") %></td>
-         <td><%= item.motorista ? item.motorista.nome : 'Sem motorista cadastrado!' %></td>
-         <td><%= item.createdAt.toLocaleDateString("pt-BR") %></td>
-         <td>
-            <a href="/entregas/<%= item.id %>/editar">Editar</a>
-            <a href="/entregas/<%= item.id %>/excluir" onclick="return confirm('Tem certeza que deseja excluir esta entrega?')">Excluir</a>
-         </td>
+         <th>Descrição</th>
+         <th>Origem</th>
+         <th>Destino</th>
+         <th>Status</th>
+         <th>Motorista</th>
+         <th>Data de criação</th>
       </tr>
-   <% }); %>
+   </thead>
+
+   <tbody>
+      <% data && data.forEach(item=> { %>
+         <tr>
+            <td>
+               <%= item.descricao %>
+            </td>
+            <td>
+               <%= item.origem %>
+            </td>
+            <td>
+               <%= item.destino %>
+            </td>
+            <td>
+               <%= item.status.split("_").join(" ") %></td>
+               <td><%= item.motorista ? item.motorista.nome : 'Sem motorista cadastrado!' %></td>
+               <td><%= item.createdAt.toLocaleDateString("pt-BR") %>
+            </td>
+            <td>
+               <a href="/painel/entregas/<%= item.id %>/editar">Editar</a>
+               <a href="/painel/entregas/<%= item.id %>/excluir"
+                  onclick="return confirm('Tem certeza que deseja excluir esta entrega?')">Excluir</a>
+            </td>
+         </tr>
+         <% }); %>
+   </tbody>
 </table>
+
+<%- include('../../partials/table-navigation', { page: page, totalPages: totalPages, baseUrl: "/painel/entregas" }) %>
 
 <%- include('../../partials/footer') %>

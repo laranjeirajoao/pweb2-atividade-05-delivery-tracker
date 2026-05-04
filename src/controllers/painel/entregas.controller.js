@@ -13,6 +13,8 @@ export class EntregasController {
 		this.avancarStatus = this.avancarStatus.bind(this);
 		this.cancelarEntrega = this.cancelarEntrega.bind(this);
 		this.atribuirMotorista = this.atribuirMotorista.bind(this);
+		this.renderizarFormularioCriacao =
+			this.renderizarFormularioCriacao.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
@@ -58,13 +60,25 @@ export class EntregasController {
 		}
 	}
 
-	async criar(req, res, next) {
+	async renderizarFormularioCriacao(req, res, next) {
 		try {
-			const novaEntrega = await this.service.criar(req.body);
-			// res.status(201).json(novaEntrega);
-			//todo
+			res.render("layouts/entregas/nova", { erros: [], dados: {} });
 		} catch (err) {
 			next(err);
+		}
+	}
+
+	async criar(req, res, next) {
+		try {
+			await this.service.criar(req.body);
+			req.flash("sucesso", "Entrega criada com sucesso!");
+			res.redirect("/painel/entregas");
+		} catch (err) {
+			req.flash("erro", "Erro ao criar entrega!");
+			res.render("layouts/entregas/nova", {
+				erros: (err.message && [err.message]) || [],
+				dados: req.body,
+			});
 		}
 	}
 

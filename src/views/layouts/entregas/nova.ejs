@@ -1,0 +1,44 @@
+<%- include('../../partials/header', { titulo: 'Painel de Entregas' }) %>
+<%- include('../../partials/navbar') %>
+
+
+<div class="form-container">
+  <h1>Nova Entrega</h1>
+
+  <!-- Exibição de erros -->
+  <% if (erros && erros.length> 0) { %>
+  <div class="alert alert-error">
+    <ul>
+      <% erros.forEach(erro=> { %>
+      <li>
+        <%= erro %>
+      </li>
+      <% }); %>
+    </ul>
+  </div>
+  <% } %>
+
+  <form method="POST" action="/painel/entregas" novalidate>
+    <div class="form-group <% if (erros && erros.some(e => e.includes('descricao'))) { %>has-error<% } %>">
+      <label for="descricao">Descrição</label>
+      <input type="text" id="descricao" name="descricao" value="<%= dados.descricao || '' %>" placeholder="Descrição completa" required>
+    </div>
+
+    <div class="form-group">
+      <label for="origem">Origem</label>
+      <input type="text" id="origem" name="origem" value="<%= dados.origem || '' %>" placeholder="Endereço de origem" required>
+    </div>
+
+    <div class="form-group">
+      <label for="destino">Destino</label>
+      <input type="text" id="destino" name="destino" value="<%= dados.destino || '' %>" placeholder="Endereço de destino" required>
+    </div>
+
+    <div class="form-actions">
+      <a href="/painel/entregas" class="btn btn-secondary">Cancelar</a>
+      <button type="submit" class="btn btn-primary">Criar Entrega</button>
+    </div>
+  </form>
+</div>
+
+<%- include('../../partials/footer') %>

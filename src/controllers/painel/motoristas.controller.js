@@ -1,5 +1,5 @@
 //
-export class MotoristasControllerEjs {
+export class MotoristasController {
 	constructor(service, entregasService) {
 		this.service = service;
 		this.entregasService = entregasService;
@@ -15,8 +15,7 @@ export class MotoristasControllerEjs {
 	async listarTodos(req, res, next) {
 		try {
 			const motoristas = await this.service.listarTodos();
-			// res.json(motoristas);
-			//todo
+			res.render("layouts/motoristas/index", { motoristas });
 		} catch (err) {
 			next(err);
 		}

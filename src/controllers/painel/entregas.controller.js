@@ -1,5 +1,5 @@
 //
-export class EntregasControllerEjs {
+export class EntregasController {
 	constructor(service) {
 		this.service = service;
 

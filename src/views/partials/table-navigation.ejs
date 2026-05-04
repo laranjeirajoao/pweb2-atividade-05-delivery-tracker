@@ -1,0 +1,19 @@
+<nav>
+   <ul class="pagination">
+      <!-- Página anterior -->
+      <% if (page> 1) { %>
+         <li class="page-item"><a class="page-link" href="<%= baseUrl %>/?page=<%= page - 1 %>">Página anterior</a>
+         </li>
+         <% } %>
+
+            <!-- Mostra a pagina atual e quantas paginas tem -->
+            <li class="page-item">Página <%= page %> de <%= totalPages %>
+            </li>
+
+            <!-- Próxima página -->
+            <% if (page < totalPages) { %>
+               <li class="page-item"><a class="page-link" href="<%= baseUrl %>/?page=<%= page + 1 %>">Próxima
+                     página</a></li>
+               <% } %>
+   </ul>
+</nav>

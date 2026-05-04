@@ -25,7 +25,14 @@ export class EntregasController {
 				createdDe,
 				createdAte,
 			});
-			res.render("layouts/entregas/index", { entregas: entregas.data });
+
+			res.render("layouts/entregas/index", {
+				data: entregas.data,
+				status: entregas.status,
+				page: entregas.page,
+				limit: entregas.limit,
+				totalPages: entregas.totalPages,
+			});
 		} catch (err) {
 			next(err);
 		}

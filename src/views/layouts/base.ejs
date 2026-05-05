@@ -19,7 +19,13 @@
   </main>
 
   <footer class="footer">
-    <p><%= new Date() %></p>
+    <p><%= new Date().toLocaleDateString("pt-BR", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }) %>
+    </p>
   </footer>
 
 </body>

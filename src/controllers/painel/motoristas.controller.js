@@ -10,6 +10,8 @@ export class MotoristasController {
 		this.criar = this.criar.bind(this);
 		this.buscarEntregas = this.buscarEntregas.bind(this);
 		this.listarMotoristasAtivos = this.listarMotoristasAtivos.bind(this);
+		this.renderizarFormularioCriacao =
+			this.renderizarFormularioCriacao.bind(this);
 	}
 
 	async listarTodos(req, res, next) {
@@ -33,13 +35,25 @@ export class MotoristasController {
 		}
 	}
 
-	async criar(req, res, next) {
+	async renderizarFormularioCriacao(req, res, next) {
 		try {
-			const novoMotorista = await this.service.criar(req.body);
-			// res.status(201).json(novoMotorista);
-			//todo
+			res.render("layouts/motoristas/novo", { erros: [], dados: {} });
 		} catch (err) {
 			next(err);
+		}
+	}
+
+	async criar(req, res, next) {
+		try {
+			await this.service.criar({ id: null, ...req.body });
+			req.flash("sucesso", "Motorista criado com sucesso!");
+			res.redirect("/painel/motoristas");
+		} catch (err) {
+			req.flash("erro", "Erro ao criar motorista!");
+			res.render("layouts/motoristas/novo", {
+				erros: (err.message && [err.message]) || [],
+				dados: req.body,
+			});
 		}
 	}
 

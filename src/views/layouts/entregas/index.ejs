@@ -1,9 +1,43 @@
-<%- include('../../partials/header', { titulo: 'Minha API de/Painel Entregas' }) %>
-<%- include('../../partials/navbar') %>
-
 <a href="/painel/entregas/nova">Cadastrar nova entrega</a>
 
-<table id="tabela/painel-entregas">
+<form method="GET" action="/painel/entregas" class="filtro-form">
+  <label for="status">Status</label>
+
+  <select name="status" id="status">
+    <option value="">Todos</option>
+
+    <option value="CRIADA" <%= statusSelecionado === "CRIADA" ? "selected" : "" %>>
+      Criada
+    </option>
+
+    <option value="EM_TRANSITO" <%= statusSelecionado === "EM_TRANSITO" ? "selected" : "" %>>
+      Em trânsito
+    </option>
+
+    <option value="ENTREGUE" <%= statusSelecionado === "ENTREGUE" ? "selected" : "" %>>
+      Entregue
+    </option>
+
+    <option value="CANCELADA" <%= statusSelecionado === "CANCELADA" ? "selected" : "" %>>
+      Cancelada
+    </option>
+  </select>
+
+  <label for="limit">Itens por página</label>
+
+  <select name="limit" id="limit">
+    <option value="10" <%= Number(limit) === 10 ? "selected" : "" %>>10</option>
+    <option value="25" <%= Number(limit) === 25 ? "selected" : "" %>>25</option>
+    <option value="50" <%= Number(limit) === 50 ? "selected" : "" %>>50</option>
+  </select>
+
+  <input type="hidden" name="page" value="1">
+  <button type="submit">Filtrar</button>
+
+  <a href="/painel/entregas">Limpar filtros</a>
+</form>
+
+<table id="tabela-painel-entregas">
   <thead>
     <tr>
       <th>Descrição</th>
@@ -28,19 +62,20 @@
         <%= item.destino %>
       </td>
       <td>
-        <%= item.status.split("_").join(" ") %></td>
+        <span class="badge badge-<%= item.status.toLowerCase() %>">
+          <%= item.status.split("_").join(" ") %>
+        </span>
+      </td>
       <td><%= item.motorista ? item.motorista.nome : 'Sem motorista cadastrado!' %></td>
       <td><%= item.createdAt.toLocaleDateString("pt-BR") %>
       </td>
       <td>
-        <a href="/painel/entregas/<%= item.id %>/editar">Editar</a>
-        <a href="/painel/entregas/<%= item.id %>/excluir" onclick="return confirm('Tem certeza que deseja excluir esta entrega?')">Excluir</a>
+        <a href="/painel/entregas/<%= item.id %>">Ver detalhes</a>
+        <!-- <a href="/painel/entregas/<%= item.id %>/excluir" onclick="return confirm('Tem certeza que deseja excluir esta entrega?')">Excluir</a> -->
       </td>
     </tr>
     <% }); %>
   </tbody>
 </table>
 
-<%- include('../../partials/table-navigation', { page: page, totalPages: totalPages, baseUrl: "/painel/entregas" }) %>
-
-<%- include('../../partials/footer') %>
+<%- include('../../partials/table-navigation', { page, totalPages, baseUrl: "/painel/entregas", status: statusSelecionado, limit }) %>

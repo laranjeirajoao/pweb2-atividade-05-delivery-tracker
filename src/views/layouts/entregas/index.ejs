@@ -1,40 +1,48 @@
-<a href="/painel/entregas/nova">Cadastrar nova entrega</a>
+<div class="filtro-form-buttons" id="botao-cadastro">
+  <button type="button"><a href="/painel/entregas/nova">Cadastrar nova entrega</a></button>
+</div>
 
 <form method="GET" action="/painel/entregas" class="filtro-form">
-  <label for="status">Status</label>
+  <div class="filtro-form-container">
+    <label for="status" class="select-filtro-label">Status</label>
 
-  <select name="status" id="status">
-    <option value="">Todos</option>
+    <select name="status" class="select-filtro">
+      <option value="">Todos</option>
 
-    <option value="CRIADA" <%= statusSelecionado === "CRIADA" ? "selected" : "" %>>
-      Criada
-    </option>
+      <option value="CRIADA" <%= statusSelecionado === "CRIADA" ? "selected" : "" %>>
+        Criada
+      </option>
 
-    <option value="EM_TRANSITO" <%= statusSelecionado === "EM_TRANSITO" ? "selected" : "" %>>
-      Em trânsito
-    </option>
+      <option value="EM_TRANSITO" <%= statusSelecionado === "EM_TRANSITO" ? "selected" : "" %>>
+        Em trânsito
+      </option>
 
-    <option value="ENTREGUE" <%= statusSelecionado === "ENTREGUE" ? "selected" : "" %>>
-      Entregue
-    </option>
+      <option value="ENTREGUE" <%= statusSelecionado === "ENTREGUE" ? "selected" : "" %>>
+        Entregue
+      </option>
 
-    <option value="CANCELADA" <%= statusSelecionado === "CANCELADA" ? "selected" : "" %>>
-      Cancelada
-    </option>
-  </select>
+      <option value="CANCELADA" <%= statusSelecionado === "CANCELADA" ? "selected" : "" %>>
+        Cancelada
+      </option>
+    </select>
+  </div>
 
-  <label for="limit">Itens por página</label>
+  <div class="filtro-form-container">
+    <label for="limit" class="select-filtro-label">Itens por página</label>
 
-  <select name="limit" id="limit">
-    <option value="10" <%= Number(limit) === 10 ? "selected" : "" %>>10</option>
-    <option value="25" <%= Number(limit) === 25 ? "selected" : "" %>>25</option>
-    <option value="50" <%= Number(limit) === 50 ? "selected" : "" %>>50</option>
-  </select>
+    <select name="limit" class="select-filtro">
+      <option value="10" <%= Number(limit) === 10 ? "selected" : "" %>>10</option>
+      <option value="25" <%= Number(limit) === 25 ? "selected" : "" %>>25</option>
+      <option value="50" <%= Number(limit) === 50 ? "selected" : "" %>>50</option>
+    </select>
+  </div>
 
-  <input type="hidden" name="page" value="1">
-  <button type="submit">Filtrar</button>
+  <input type="hidden" name="page" value="1"> <!-- reseta a pagina quando filtra -->
 
-  <a href="/painel/entregas">Limpar filtros</a>
+  <div class="filtro-form-buttons">
+    <button type="submit">Filtrar</button>
+    <button type="button"><a href="/painel/entregas">Limpar filtros</a></button>
+  </div>
 </form>
 
 <table id="tabela-painel-entregas">

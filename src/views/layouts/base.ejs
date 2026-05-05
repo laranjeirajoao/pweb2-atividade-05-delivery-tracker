@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title><%= typeof titulo !== 'undefined' ? titulo : 'Minha API' %></title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+  <%- include('../partials/navbar') %>
+  <%- include('../partials/flash') %>
+
+  <main class="container">
+    <div class="div1">
+      <%- body %>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <p><%= new Date() %></p>
+  </footer>
+
+</body>
+
+</html>

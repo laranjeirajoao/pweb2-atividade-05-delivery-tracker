@@ -19,7 +19,7 @@ export class EntregasController {
 
 	async listarTodos(req, res, next) {
 		try {
-			const { status, page, limit, createdDe, createdAte } = req.query;
+			const { status = "", page, limit, createdDe, createdAte } = req.query;
 			const entregas = await this.service.listarTodos({
 				status,
 				page,
@@ -30,7 +30,7 @@ export class EntregasController {
 
 			res.render("layouts/entregas/index", {
 				data: entregas.data,
-				status: entregas.status,
+				statusSelecionado: status,
 				page: entregas.page,
 				limit: entregas.limit,
 				totalPages: entregas.totalPages,
@@ -53,8 +53,7 @@ export class EntregasController {
 	async buscarPorId(req, res, next) {
 		try {
 			const entrega = await this.service.buscarPorId(Number(req.params.id));
-			// res.json(entrega);
-			// todo
+			res.render("layouts/entregas/detalhes", { data: entrega });
 		} catch (err) {
 			next(err);
 		}
@@ -84,25 +83,35 @@ export class EntregasController {
 
 	async avancarStatus(req, res, next) {
 		try {
-			const atualizado = await this.service.avancarStatus(
-				Number(req.params.id),
-			);
-			// res.json(atualizado);
-			// todo
+			const id = Number(req.params.id);
+			await this.service.avancarStatus(id);
+
+			req.flash("sucesso", "Entrega avançada com sucesso!");
+			res.redirect(`/painel/entregas/${id}`);
 		} catch (err) {
-			next(err);
+			req.flash(
+				"erro",
+				"Erro ao avançar status da entrega!" +
+					(err.message ? ` ${err.message}` : ""),
+			);
+			res.redirect(`/painel/entregas/${Number(req.params.id)}`);
 		}
 	}
 
 	async cancelarEntrega(req, res, next) {
 		try {
-			const atualizado = await this.service.cancelarEntrega(
-				Number(req.params.id),
-			);
-			// res.json(atualizado);
-			// todo
+			const id = Number(req.params.id);
+			await this.service.cancelarEntrega(id);
+
+			req.flash("sucesso", "Entrega cancelada com sucesso!");
+			res.redirect(`/painel/entregas/${id}`);
 		} catch (err) {
-			next(err);
+			req.flash(
+				"erro",
+				"Erro ao cancelar entrega!" +
+					(err.message ? ` ${err.message}` : ""),
+			);
+			res.redirect(`/painel/entregas/${Number(req.params.id)}`);
 		}
 	}
 

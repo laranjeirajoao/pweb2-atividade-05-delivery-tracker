@@ -87,7 +87,10 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 	async buscarPorId(id) {
 		return await prisma.entrega.findUnique({
 			where: { id },
-			include: { historico: true, motorista: true },
+			include: {
+				historico: { orderBy: { createdAt: "asc" } },
+				motorista: true,
+			},
 		});
 	}
 

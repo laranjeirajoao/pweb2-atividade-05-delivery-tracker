@@ -46,6 +46,7 @@
       <th>Status</th>
       <th>Motorista</th>
       <th>Data de criação</th>
+      <th>Datalhes</th>
     </tr>
   </thead>
 
@@ -70,7 +71,7 @@
       <td><%= item.createdAt.toLocaleDateString("pt-BR") %>
       </td>
       <td>
-        <a href="/painel/entregas/<%= item.id %>">Ver detalhes</a>
+        <a href="/painel/entregas/<%= item.id %>" id="btn-detalhes-entregas">Ver detalhes</a>
         <!-- <a href="/painel/entregas/<%= item.id %>/excluir" onclick="return confirm('Tem certeza que deseja excluir esta entrega?')">Excluir</a> -->
       </td>
     </tr>

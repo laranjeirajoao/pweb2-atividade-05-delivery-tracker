@@ -92,3 +92,22 @@ td {
 	text-decoration: none;
 	font-weight: bold;
 }
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+	gap: 10px;
+}
+
+.pagination .page-item {
+	list-style: none;
+}
+
+.pagination .page-item a {
+	color: black;
+	padding: 8px 16px;
+	text-decoration: none;
+	border: 1px solid #ddd;
+	margin: 0 4px;
+}

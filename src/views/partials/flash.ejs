@@ -1,0 +1,12 @@
+<!-- src/views/partials/flash.ejs — incluído no layout base -->
+<% if (flash.sucesso && flash.sucesso.length > 0) { %>
+<div class="alert alert-success">
+  <% flash.sucesso.forEach(msg => { %><p><%= msg %></p><% }); %>
+</div>
+<% } %>
+
+<% if (flash.erro && flash.erro.length > 0) { %>
+<div class="alert alert-error">
+  <% flash.erro.forEach(msg => { %><p><%= msg %></p><% }); %>
+</div>
+<% } %>

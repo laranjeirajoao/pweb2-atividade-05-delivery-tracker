@@ -1,28 +1,43 @@
-<a href="/painel/entregas/nova">Detalhes de entrega</a>
+<div class="container">
+  <div class="container-item">
+    <h3>Descrição</h3>
+    <span><%= data.descricao %></span>
+  </div>
+  <div class="container-item">
+    <h3>Origem</h3>
+    <span><%= data.origem %></span>
+  </div>
+  <div class="container-item">
+    <h3>Destino</h3>
+    <span><%= data.destino %></span>
+  </div>
+  <div class="container-item">
+    <h3>Status</h3>
+    <span><%= data.status.split("_").join(" ") %></span>
+  </div>
+  <div class="container-item">
+    <h3>Motorista</h3>
+    <span><%= data.motorista ? data.motorista.nome : 'Sem motorista cadastrado!' %></span>
+  </div>
+  <div class="container-item">
+    <h3>Data de criação</h3>
+    <span><%= data.createdAt.toLocaleDateString("pt-BR") %></span>
+  </div>
+</div>
 
 <div class="container">
-  <h3>Descrição</h3>
-  <span><%= data.descricao %></span>
-  <h3>Origem</h3>
-  <span><%= data.origem %></span>
-  <h3>Destino</h3>
-  <span><%= data.destino %></span>
-  <h3>Status</h3>
-  <span><%= data.status.split("_").join(" ") %></span>
-  <h3>Motorista</h3>
-  <span><%= data.motorista ? data.motorista.nome : 'Sem motorista cadastrado!' %></span>
-  <h3>Data de criação</h3>
-  <span><%= data.createdAt.toLocaleDateString("pt-BR") %></span>
-</div>
-<td>
-  <form action="/painel/entregas/<%= data.id %>/avancar?_method=PATCH" method="POST">
-    <button type="submit" onclick="return confirm('Tem certeza que deseja avancar o status desta entrega?')">Avancar status</button>
-  </form>
+  <div class="form-buttons">
+    <form action="/painel/entregas/<%= data.id %>/avancar?_method=PATCH" method="POST">
+      <button type="submit" onclick="return confirm('Tem certeza que deseja avancar o status desta entrega?')">Avancar status</button>
+    </form>
+  </div>
 
-  <form action="/painel/entregas/<%= data.id %>/cancelar?_method=PATCH" method="POST">
-    <button type="submit" onclick="return confirm('Tem certeza que deseja cancelar esta entrega?')">Cancelar entrega</button>
-  </form>
-</td>
+  <div class="form-buttons">
+    <form action="/painel/entregas/<%= data.id %>/cancelar?_method=PATCH" method="POST">
+      <button type="submit" onclick="return confirm('Tem certeza que deseja cancelar esta entrega?')">Cancelar entrega</button>
+    </form>
+  </div>
+</div>
 
 <table id="tabela-painel-entregas-historico">
   <thead>

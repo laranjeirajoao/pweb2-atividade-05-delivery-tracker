@@ -129,11 +129,6 @@ td {
 	margin-bottom: 10px;
 }
 
-.filtro-form-buttons {
-	display: flex;
-	gap: 10px;
-}
-
 .select-filtro-label {
 	display: flex;
 	align-items: center;
@@ -147,7 +142,12 @@ td {
 	border-radius: 4px;
 }
 
-.filtro-form-buttons button {
+.form-buttons {
+	display: flex;
+	gap: 10px;
+}
+
+.form-buttons button {
 	padding: 8px 16px;
 	border: none;
 	background-color: #007bff;
@@ -156,7 +156,7 @@ td {
 	cursor: pointer;
 }
 
-.filtro-form-buttons button a {
+.form-buttons button a {
 	text-decoration: none;
 	color: white;
 }
@@ -217,4 +217,22 @@ td {
 
 .alert ul li {
 	text-decoration: none;
+}
+
+.container {
+	display: flex;
+	gap: 10px;
+	justify-content: center;
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+.container-item {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	border: 1px solid #ddd;
+	padding: 10px;
+	border-radius: 4px;
+	background-color: #f8f9fa;
 }

@@ -1,4 +1,6 @@
 // src/middlewares/validacao.middleware.js
+import { body, validationResult } from "express-validator";
+
 export const validarCriacaoEntrega = (req, res, next) => {
 	const { descricao, origem, destino } = req.body;
 
@@ -57,6 +59,39 @@ export const validarDatasNaQuery = (req, res, next) => {
 
 	if (createdAte && !isoRegex.test(createdAte)) {
 		return res.status(400).json({ erro: "createdAte inválido!" });
+	}
+
+	next();
+};
+
+export const regrasUsuario = [
+	body("nome")
+		.trim()
+		.notEmpty()
+		.withMessage("Nome é obrigatório")
+		.isLength({ min: 2 })
+		.withMessage("O nome deve ter ao menos 2 caracteres"),
+
+	body("email")
+		.trim()
+		.notEmpty()
+		.withMessage("E-mail é obrigatório")
+		.isEmail()
+		.withMessage("E-mail inválido"),
+	body("senha")
+		.trim()
+		.notEmpty()
+		.withMessage("Senha é obrigatória")
+		.isLength({ min: 6 })
+		.withMessage("A senha deve ter ao menos 6 caracteres"),
+];
+
+export const verificarValidacaoApi = () => (req, res, next) => {
+	const erros = validationResult(req);
+
+	if (!erros.isEmpty()) {
+		const mensagens = erros.array().map((e) => e.msg);
+		return res.status(400).json({ erros: mensagens });
 	}
 
 	next();

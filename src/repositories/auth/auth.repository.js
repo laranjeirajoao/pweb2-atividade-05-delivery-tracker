@@ -4,31 +4,31 @@ import { prisma } from "../../database/prisma.js";
 export class AuthRepositoryPrisma {
 	async buscarUsuarioPorEmail(email) {
 		// Inclui a senha — usado apenas internamente para autenticação
-		return prisma.usuario.findUnique({ where: { email } });
+		return await prisma.usuario.findUnique({ where: { email } });
 	}
 
 	async criarUsuario(dados) {
-		return prisma.usuario.create({ data: dados });
+		return await prisma.usuario.create({ data: dados });
 	}
 
 	async salvarRefreshToken({ token, usuarioId, expiresAt }) {
-		return prisma.refreshToken.create({
+		return await prisma.refreshToken.create({
 			data: { token, usuarioId, expiresAt },
 		});
 	}
 
 	async buscarRefreshToken(token) {
-		return prisma.refreshToken.findUnique({
+		return await prisma.refreshToken.findUnique({
 			where: { token },
 			include: { usuario: true },
 		});
 	}
 
 	async revogarRefreshToken(token) {
-		return prisma.refreshToken.deleteMany({ where: { token } });
+		return await prisma.refreshToken.deleteMany({ where: { token } });
 	}
 
 	async revogarTodosTokensDoUsuario(usuarioId) {
-		return prisma.refreshToken.deleteMany({ where: { usuarioId } });
+		return await prisma.refreshToken.deleteMany({ where: { usuarioId } });
 	}
 }

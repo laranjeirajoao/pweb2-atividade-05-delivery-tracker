@@ -14,7 +14,7 @@ export class AuthService {
 		const jaExiste = await this.repository.buscarUsuarioPorEmail(email);
 		if (jaExiste) throw new AppError("E-mail já cadastrado", 409);
 
-		const senhaHash = await bcrypt.hash(senha, CUSTO_BCRYPT);
+		const senhaHash = await this._gerarHashSenha(senha);
 		const usuario = await this.repository.criarUsuario({
 			nome,
 			email,
@@ -27,14 +27,10 @@ export class AuthService {
 	}
 
 	async login({ email, senha }) {
-		// Busca com senha para comparação
 		const usuario = await this.repository.buscarUsuarioPorEmail(email);
-
-		// Mensagem genérica — não revela se o e-mail existe ou não
-		if (!usuario) throw new AppError("Credenciais inválidas", 401);
-
-		const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
-		if (!senhaCorreta) throw new AppError("Credenciais inválidas", 401);
+		const senhaCorreta = await this._compararSenha(senha, usuario.senha);
+		if (!usuario || !senhaCorreta)
+			throw new AppError("Credenciais inválidas", 401);
 
 		const payload = {
 			sub: usuario.id,
@@ -54,11 +50,24 @@ export class AuthService {
 			expiresAt,
 		});
 
-		const { senha: _, ...usuarioSemSenha } = usuario;
-		return { accessToken, refreshToken, usuario: usuarioSemSenha };
+		return { accessToken, refreshToken };
 	}
 
 	async logout(refreshToken) {
-		await this.repository.revogarRefreshToken(refreshToken);
+		//retorna quantas linhas afetadas
+		const { count } = await this.repository.revogarRefreshToken(refreshToken);
+
+		if (count < 1) {
+			throw new AppError("Não foi possivel realizar o logout!", 400);
+		}
+		return { count };
+	}
+
+	async _gerarHashSenha(senha) {
+		return await bcrypt.hash(senha, CUSTO_BCRYPT);
+	}
+
+	async _compararSenha(senha, hash) {
+		return await bcrypt.compare(senha, hash);
 	}
 }

@@ -8,10 +8,19 @@ import { MotoristasRepositoryPrisma as MotoristasRepository } from "../repositor
 import { EntregasService } from "../services/entregas.service.js";
 import { MotoristasService } from "../services/motoristas.service.js";
 
+import { AuthController } from "../controllers/api/auth.controller.js";
+import { AuthRepositoryPrisma } from "../repositories/auth/auth.repository.js";
+import { AuthService } from "../services/auth.service.js";
+
 const entregasRepo = new EntregasRepository();
 const motoristasRepo = new MotoristasRepository();
 const entregasService = new EntregasService(entregasRepo, motoristasRepo);
 const motoristasService = new MotoristasService(motoristasRepo);
+
+const authRepository = new AuthRepositoryPrisma();
+const authService = new AuthService(authRepository);
+const authController = new AuthController(authService);
+
 const entregasController = new EntregasController(entregasService);
 const motoristasController = new MotoristasController(
 	motoristasService,
@@ -25,6 +34,7 @@ const motoristasControllerEjs = new MotoristasControllerEjs(
 );
 
 export {
+	authController,
 	entregasController,
 	entregasControllerEjs,
 	motoristasController,

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import authRouter from "./auth.routes.js";
 import entregasRouter from "./entregas.routes.js";
 import motoristasRouter from "./motoristas.routes.js";
 import relatoriosRouter from "./relatorios.routes.js";
@@ -10,6 +11,7 @@ import relatoriosRouterEjs from "./relatorios.ejs.routes.js";
 
 const router = Router();
 
+router.use("/api/auth", authRouter);
 router.use("/api/entregas", entregasRouter);
 router.use("/api/motoristas", motoristasRouter);
 router.use("/api/relatorios", relatoriosRouter);

@@ -1,5 +1,18 @@
 import { verificarAccessToken } from "../utils/jwt.js";
 
+export const autenticar =
+	(...papeis) =>
+	(req, res, next) => {
+		if (!req.usuario)
+			return res.status(401).json({ error: "Não autenticado!" });
+
+		if (!papeis.includes(req.usuario.papel)) {
+			return res.status(403).json({ error: "Acesso não autorizado!" });
+		}
+
+		return next();
+	};
+
 export const validarTokenRequest = (req, res, next) => {
 	const authHeader = req.headers["authorization"];
 

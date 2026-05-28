@@ -36,7 +36,7 @@ export class EntregasService {
 		return entrega;
 	}
 
-	async criar({ descricao, origem, destino }) {
+	async criar({ descricao, origem, destino, criadorId }) {
 		origem = origem.trim();
 		descricao = descricao.trim();
 		destino = destino.trim();
@@ -58,6 +58,7 @@ export class EntregasService {
 			origem,
 			destino,
 			status: EntregaStatus.CRIADA,
+			criadorId,
 			historico: [this._criarHistorio("CRIAÇÃO")],
 		};
 

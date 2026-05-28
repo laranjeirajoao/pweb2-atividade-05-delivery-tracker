@@ -52,6 +52,7 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				take: limit,
 				orderBy: { id: "asc" },
 				include: { motorista: true },
+				omit: { criador_id: true },
 			}),
 			prisma.entrega.count({ where }),
 		]);
@@ -90,6 +91,7 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 			include: {
 				historico: { orderBy: { createdAt: "asc" } },
 				motorista: true,
+				criador: { omit: { senha: true, criadoEm: true } },
 			},
 		});
 	}
@@ -101,12 +103,14 @@ export class EntregasRepositoryPrisma extends IEntregasRepository {
 				destino: dados.destino,
 				origem: dados.origem,
 				status: dados.status,
+				criador_id: dados.criadorId,
 				historico: {
 					create: dados.historico.map((item) => {
 						return { descricao: item.descricao };
 					}),
 				},
 			},
+			omit: { criador_id: true },
 		});
 	}
 

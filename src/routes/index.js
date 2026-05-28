@@ -4,7 +4,11 @@ import entregasRouter from "./entregas.routes.js";
 import motoristasRouter from "./motoristas.routes.js";
 import relatoriosRouter from "./relatorios.routes.js";
 
-import { validarTokenRequest } from "../middlewares/autenticar.middleware.js";
+import {
+	autenticar,
+	validarTokenRequest,
+} from "../middlewares/autenticar.middleware.js";
+import { RoleEnum } from "../utils/RoleEnum.js";
 import entregasRouterEjs from "./entregas.ejs.routes.js";
 import motoristasRouterEjs from "./motoristas.ejs.routes.js";
 import painelRoutes from "./painel.routes.js";
@@ -15,7 +19,12 @@ const router = Router();
 router.use("/api/auth", authRouter);
 router.use("/api/entregas", validarTokenRequest, entregasRouter);
 router.use("/api/motoristas", validarTokenRequest, motoristasRouter);
-router.use("/api/relatorios", validarTokenRequest, relatoriosRouter);
+router.use(
+	"/api/relatorios",
+	validarTokenRequest,
+	autenticar(RoleEnum.GESTOR),
+	relatoriosRouter,
+);
 
 router.use("/painel/entregas", entregasRouterEjs);
 router.use("/painel/motoristas", motoristasRouterEjs);

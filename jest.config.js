@@ -2,7 +2,11 @@
 export default {
 	testEnvironment: "node",
 	transform: {}, // sem transpilação — Node nativo com ESM
-	testMatch: ["**/__tests__/**/*.test.js", "**/*.spec.js"],
+	testMatch: [
+		"**/__tests__/**/*.test.js",
+		"**/tests/unit/**/*.test.js",
+		"**/*.spec.js",
+	],
 	collectCoverageFrom: [
 		"src/**/*.js",
 		"!src/config/**", // exclui arquivos de configuração

@@ -8,7 +8,7 @@ export default {
 		"!src/config/**", // exclui arquivos de configuração
 		"!src/server.js", // exclui ponto de entrada
 	],
-	coverageThresholds: {
+	coverageThreshold: {
 		global: {
 			statements: 80,
 			branches: 75,
@@ -16,5 +16,6 @@ export default {
 			lines: 80,
 		},
 	},
-	setupFilesAfterFramework: ["./tests/setup.js"],
+	setupFiles: ["dotenv/config"],
+	setupFilesAfterEnv: ["./tests/setup.js"],
 };

@@ -32,8 +32,8 @@
     </form>
   </div>
 
-  <div class="form-buttons">
-    <form action="/painel/entregas/<%= data.id %>/cancelar?_method=PATCH" method="POST">
+  <div class="form-buttons" data-role-required="GESTOR" hidden>
+    <form action="/painel/entregas/<%= data.id %>/cancelar?_method=PATCH" method="POST" data-role-required="GESTOR">
       <button type="submit" onclick="return confirm('Tem certeza que deseja cancelar esta entrega?')">Cancelar entrega</button>
     </form>
   </div>

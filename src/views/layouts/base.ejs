@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><%= typeof titulo !== 'undefined' ? titulo : 'Minha API' %></title>
   <link rel="stylesheet" href="/css/styles.css" />
+  <script src="/js/auth-guard.js"></script>
 </head>
 
 <body>
@@ -27,6 +28,13 @@
       }) %>
     </p>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/painel-api.js"></script>
+  <script src="/js/login.js"></script>
+  <script src="/js/registrar.js"></script>
+  <script src="/js/logout.js"></script>
 
 </body>
 

@@ -1,7 +1,9 @@
 <nav class="navbar">
-	<ul class="navbar-links">
-		<li><a href="/painel" class="navbar-brand">Página inicial</a></li>
-		<li><a href="/painel/entregas">Entregas</a></li>
-		<li><a href="/painel/motoristas">Motoristas</a></li>
-	</ul>
+  <ul class="navbar-links">
+    <li data-authenticated-only hidden><a href="/painel" class="navbar-brand">Página inicial</a></li>
+    <li data-authenticated-only hidden><a href="/painel/entregas">Entregas</a></li>
+    <li data-authenticated-only hidden><a href="/painel/motoristas">Motoristas</a></li>
+    <li data-authenticated-only data-role-required="GESTOR" hidden><a href="/painel/relatorios">Relatórios</a></li>
+    <li data-authenticated-only hidden><button id="logoutButton" type="button">Sair</button></li>
+  </ul>
 </nav>

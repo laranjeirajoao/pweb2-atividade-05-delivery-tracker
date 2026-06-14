@@ -1,0 +1,1 @@
+const painelApi = window.api;

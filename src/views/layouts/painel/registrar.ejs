@@ -1,0 +1,38 @@
+<% if (erros && erros.length> 0) { %>
+<div class="alert alert-error">
+  <ul>
+    <% erros.forEach(erro=> { %>
+    <li>
+      <%= erro %>
+    </li>
+    <% }); %>
+  </ul>
+</div>
+<% } %>
+
+<h1>Criar conta</h1>
+
+<form id="registrarForm" class="form">
+  <div class="form-group">
+    <label for="nome">Nome</label>
+    <input id="nome" type="text" placeholder="Seu nome" value="<%= dados.nome || '' %>" required />
+  </div>
+
+  <div class="form-group">
+    <label for="email">E-mail</label>
+    <input id="email" type="email" placeholder="email@exemplo.com" value="<%= dados.email || '' %>" required />
+  </div>
+
+  <div class="form-group">
+    <label for="senha">Senha</label>
+    <input id="senha" type="password" placeholder="Mínimo de 6 caracteres" minlength="6" required />
+  </div>
+
+  <div class="form-actions">
+    <button type="submit">Registrar</button>
+  </div>
+</form>
+
+<p id="registerMessage" class="form-message" role="status"></p>
+
+<p>Já tem uma conta? <a href="/login">Entrar</a></p>

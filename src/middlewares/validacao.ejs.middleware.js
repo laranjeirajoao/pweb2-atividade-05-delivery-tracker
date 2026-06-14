@@ -59,6 +59,22 @@ export const regrasDatasQuery = [
 		.withMessage("createdAte deve ser uma data ISO 8601 válida"),
 ];
 
+export const regrasLogin = [
+	body("email")
+		.trim()
+		.notEmpty()
+		.withMessage("E-mail é obrigatório")
+		.isEmail()
+		.withMessage("E-mail inválido"),
+
+	body("password")
+		.trim()
+		.notEmpty()
+		.withMessage("Senha é obrigatória")
+		.isLength({ min: 6 })
+		.withMessage("A senha deve ter ao menos 6 caracteres"),
+];
+
 // Middleware que verifica o resultado da validação
 export const verificarValidacao = (viewName) => (req, res, next) => {
 	const erros = validationResult(req);

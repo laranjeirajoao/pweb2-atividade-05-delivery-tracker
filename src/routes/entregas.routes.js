@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { autenticar } from "../middlewares/autenticar.middleware.js";
+import { autorizar } from "../middlewares/autenticar.middleware.js";
 import {
 	validarCriacaoEntrega,
 	validarDatasNaQuery,
@@ -15,7 +15,7 @@ router.get("/:id", entregasController.buscarPorId);
 router.patch("/:id/avancar", entregasController.avancarStatus);
 router.patch(
 	"/:id/cancelar",
-	autenticar(RoleEnum.GESTOR),
+	autorizar(RoleEnum.GESTOR),
 	entregasController.cancelarEntrega,
 );
 router.get("/:id/historico", entregasController.buscarHistoricoPorId);

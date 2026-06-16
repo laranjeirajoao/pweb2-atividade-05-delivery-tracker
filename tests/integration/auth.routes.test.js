@@ -4,29 +4,7 @@ import request from "supertest";
 import app from "../../src/app.js";
 import { prisma } from "../../src/database/prisma.js";
 
-// Função auxiliar para obter um token de autenticação nos testes
-async function obterToken(papel = "USER") {
-	const email = `teste_${Date.now()}@ex.com`;
-	await request(app)
-		.post("/api/auth/registrar")
-		.send({ nome: "Usuário Teste", email, senha: "senha12345" });
-
-	if (papel === "ADMIN") {
-		await prisma.usuario.update({
-			where: { email },
-			data: { papel: "ADMIN" },
-		});
-	}
-
-	const resposta = await request(app)
-		.post("/api/auth/login")
-		.send({ email, senha: "senha12345" });
-
-	return resposta.body.accessToken;
-}
-
 beforeEach(async () => {
-	// Limpa a base entre testes — garante isolamento
 	await prisma.refreshToken.deleteMany();
 	await prisma.usuario.deleteMany();
 });

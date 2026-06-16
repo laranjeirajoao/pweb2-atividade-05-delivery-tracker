@@ -17,7 +17,7 @@ export class AuthController {
 				email,
 				senha,
 			});
-			res.json(usuario);
+			res.status(201).json(usuario);
 		} catch (err) {
 			next(err);
 		}

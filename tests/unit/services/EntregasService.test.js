@@ -1,7 +1,7 @@
 import { describe, expect, it, jest } from "@jest/globals";
 import { EntregasService } from "../../../src/services/entregas.service.js";
 
-describe("EntregasService", () => {
+describe("Testes unitários de Entregas Service", () => {
 	describe("Criação de entregas", () => {
 		const retornoEsperadoRepository = {
 			data: [],

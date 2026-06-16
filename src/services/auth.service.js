@@ -28,7 +28,10 @@ export class AuthService {
 
 	async login({ email, senha }) {
 		const usuario = await this.repository.buscarUsuarioPorEmail(email);
-		const senhaCorreta = await this._compararSenha(senha, usuario.senha);
+		const senhaCorreta = await this._compararSenha(
+			senha,
+			usuario?.senha ?? "",
+		);
 		if (!usuario || !senhaCorreta)
 			throw new AppError("Credenciais inválidas", 401);
 
@@ -50,7 +53,9 @@ export class AuthService {
 			expiresAt,
 		});
 
-		return { accessToken, refreshToken };
+		const { senha: _, ...usuarioSemSenha } = usuario;
+
+		return { accessToken, refreshToken, usuario: usuarioSemSenha };
 	}
 
 	async logout(refreshToken) {

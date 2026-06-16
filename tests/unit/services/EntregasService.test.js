@@ -41,4 +41,95 @@ describe("EntregasService", () => {
 			});
 		});
 	});
+
+	describe("Transição de status", () => {
+		const entregaCriada = {
+			id: 1,
+			descricao: "",
+			origem: "sao miguel",
+			destino: "maceio",
+			historico: [],
+			status: "CRIADA",
+			motoristaId: null,
+		};
+
+		const entregaEmTransito = {
+			id: 1,
+			descricao: "",
+			origem: "sao miguel",
+			destino: "maceio",
+			historico: [],
+			status: "EM_TRANSITO",
+			motoristaId: null,
+		};
+
+		const entregaEntregue = {
+			id: 1,
+			descricao: "",
+			origem: "sao miguel",
+			destino: "maceio",
+			historico: [],
+			status: "ENTREGUE",
+			motoristaId: null,
+		};
+
+		const entregaCancelada = {
+			id: 1,
+			descricao: "",
+			origem: "sao miguel",
+			destino: "maceio",
+			historico: [],
+			status: "CANCELADA",
+			motoristaId: null,
+		};
+
+		it("Deve avançar estado de CRIADA pra EM_TRANSITO", async () => {
+			const repository = {
+				buscarPorId: jest.fn().mockResolvedValue(entregaCriada),
+				atualizar: jest.fn().mockResolvedValue(entregaEmTransito),
+			};
+			const service = new EntregasService(repository);
+
+			await expect(service.avancarStatus(1)).resolves.toHaveProperty(
+				"status",
+				"EM_TRANSITO",
+			);
+		});
+
+		it("Deve avançar estado de EM_TRANSITO pra ENTREGUE", async () => {
+			const repository = {
+				buscarPorId: jest.fn().mockResolvedValue(entregaEmTransito),
+				atualizar: jest.fn().mockResolvedValue(entregaEntregue),
+			};
+			const service = new EntregasService(repository);
+			await expect(service.avancarStatus(1)).resolves.toHaveProperty(
+				"status",
+				"ENTREGUE",
+			);
+		});
+
+		it("Deve falhar ao tentar avancar estado ENTREGUE", async () => {
+			const repository = {
+				buscarPorId: jest.fn().mockResolvedValue(entregaEntregue),
+				atualizar: jest.fn().mockResolvedValue(entregaEntregue),
+			};
+			const service = new EntregasService(repository);
+			await expect(service.avancarStatus(1)).rejects.toMatchObject({
+				message: "Entrega já finalizada. Status atual: ENTREGUE",
+				statusCode: 409,
+			});
+		});
+
+		it("Deve falhar ao tentar cancelar entrega com status ENTREGUE", async () => {
+			const repository = {
+				buscarPorId: jest.fn().mockResolvedValue(entregaEntregue),
+				atualizar: jest.fn().mockResolvedValue(entregaCancelada),
+			};
+			const service = new EntregasService(repository);
+			await expect(service.cancelarEntrega(1)).rejects.toMatchObject({
+				message: "Entrega já finalizada. Status atual: ENTREGUE",
+				statusCode: 409,
+			});
+		});
+	});
 });

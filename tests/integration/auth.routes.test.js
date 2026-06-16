@@ -1,5 +1,6 @@
 // tests/integration/usuarios.routes.test.js
 import { beforeEach, describe, expect, it } from "@jest/globals";
+import { randomUUID } from "node:crypto";
 import request from "supertest";
 import app from "../../src/app.js";
 import { prisma } from "../../src/database/prisma.js";
@@ -11,7 +12,7 @@ beforeEach(async () => {
 
 describe("POST /api/auth/registrar", () => {
 	it("deve retornar 201 quando os dados sao validos", async () => {
-		const email = `teste_${Date.now()}@ex.com`;
+		const email = `teste_${randomUUID()}@ex.com`;
 		const resposta = await request(app)
 			.post("/api/auth/registrar")
 			.send({ nome: "Usuário Teste", email, senha: "senha12345" });
@@ -21,7 +22,7 @@ describe("POST /api/auth/registrar", () => {
 	});
 
 	it("deve retornar 400 quando senha for menor que 6 caracteres", async () => {
-		const email = `teste_${Date.now()}@ex.com`;
+		const email = `teste_${randomUUID()}@ex.com`;
 		const resposta = await request(app)
 			.post("/api/auth/registrar")
 			.send({ nome: "Usuário Teste", email, senha: "senha" });
@@ -50,7 +51,7 @@ describe("POST /api/auth/registrar", () => {
 
 describe("POST /api/auth/login", () => {
 	it("deve retornar 200 com accessToken e refreshToken", async () => {
-		const email = `teste_${Date.now()}@ex.com`;
+		const email = `teste_${randomUUID()}@ex.com`;
 		await request(app)
 			.post("/api/auth/registrar")
 			.send({ nome: "Usuário Teste", email, senha: "senha12345" });
@@ -65,7 +66,7 @@ describe("POST /api/auth/login", () => {
 	});
 
 	it("deve retornar 401 quando credenciais invalidas (senha incorreta)", async () => {
-		const email = `teste_${Date.now()}@ex.com`;
+		const email = `teste_${randomUUID()}@ex.com`;
 		await request(app)
 			.post("/api/auth/registrar")
 			.send({ nome: "Usuário Teste", email, senha: "senha12345" });
@@ -79,7 +80,7 @@ describe("POST /api/auth/login", () => {
 	});
 
 	it("deve retornar 401 quando credenciais invalidas (email inexistente)", async () => {
-		const email = `teste_${Date.now()}@ex.com`;
+		const email = `teste_${randomUUID()}@ex.com`;
 
 		const resposta = await request(app)
 			.post("/api/auth/login")

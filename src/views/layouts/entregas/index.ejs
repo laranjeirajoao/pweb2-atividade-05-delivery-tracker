@@ -45,7 +45,7 @@
   </div>
 </form>
 
-<table id="tabela-painel-entregas">
+<table id="tabela-painel-entregas" data-testid="tabela-entregas">
   <thead>
     <tr>
       <th>Descrição</th>
@@ -60,7 +60,7 @@
 
   <tbody>
     <% data && data.forEach(item=> { %>
-    <tr>
+    <tr data-testid="linha-entrega">
       <td>
         <%= item.descricao %>
       </td>

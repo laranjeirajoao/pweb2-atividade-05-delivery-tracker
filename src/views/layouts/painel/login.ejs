@@ -1,5 +1,5 @@
 <% if (erros && erros.length> 0) { %>
-<div class="alert alert-error">
+<div class="alert alert-error" data-testid="alerta-erro">
   <ul>
     <% erros.forEach(erro=> { %>
     <li>
@@ -15,16 +15,16 @@
 <form id="loginForm" class="form">
   <div class="form-group">
     <label for="email">E-mail</label>
-    <input id="email" type="email" placeholder="email@exemplo.com" value="<%= dados.email || '' %>" required />
+    <input id="email" type="email" placeholder="email@exemplo.com" value="<%= dados.email || '' %>" required data-testid="input-email" />
   </div>
 
   <div class="form-group">
     <label for="senha">Senha</label>
-    <input id="senha" type="password" placeholder="Sua senha" required />
+    <input id="senha" type="password" placeholder="Sua senha" required data-testid="input-senha" />
   </div>
 
   <div class="form-actions">
-    <button type="submit">Entrar</button>
+    <button type="submit" data-testid="btn-login">Entrar</button>
   </div>
 </form>
 

@@ -20,6 +20,6 @@ export default {
 			lines: 80,
 		},
 	},
-	setupFiles: ["dotenv/config"],
+	setupFiles: ["<rootDir>/tests/load-test-env.js"],
 	setupFilesAfterEnv: ["./tests/setup.js"],
 };

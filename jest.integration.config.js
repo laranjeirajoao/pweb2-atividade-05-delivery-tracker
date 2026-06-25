@@ -5,5 +5,6 @@ export default {
 		"**/tests/integration/**/*.spec.js",
 	],
 	maxWorkers: 1,
-	setupFilesAfterEnv: ["<rootDir>/tests/integration/setup.js"],
+	setupFiles: ["<rootDir>/tests/load-test-env.js"],
+	setupFilesAfterEnv: ["<rootDir>/tests/setup.js"],
 };
